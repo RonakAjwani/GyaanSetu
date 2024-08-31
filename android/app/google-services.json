@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "453859984245",
+    "project_id": "gyaansetu-e4884",
+    "storage_bucket": "gyaansetu-e4884.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453859984245:android:99eaa2f44fa9868598493c",
+        "android_client_info": {
+          "package_name": "com.example.gyaan_setu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABhT5KUMAPOufg7UdVxBXejVOAl0_H3DY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
