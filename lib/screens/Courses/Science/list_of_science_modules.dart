@@ -5,15 +5,15 @@ import '../Mathematics/module_video_logic.dart'; // Ensure that chapter_detail.d
 class SciencePage extends StatelessWidget {
   final List<Map<String, String>> chapters = [
     {
-      'title': 'Introduction to Science: Chapter 1',
+      'title': 'Ch-1 Food Where does it come from',
       'videoId': 'nIjAEHi-6HU',
     },
     {
-      'title': 'States of Matter: Chapter 2',
+      'title': 'Ch-2 Components of Fod with QR',
       'videoId': '6Lb8PCw6vcc',
     },
     {
-      'title': 'The Human Digestive System: Chapter 3',
+      'title': 'Ch-3 Fiber',
       'videoId': 'Y_7WiIi_uTk',
     },
     {
