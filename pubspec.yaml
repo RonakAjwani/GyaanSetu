@@ -92,6 +92,15 @@ flutter:
     - assets/sign_language/dda.png
     - assets/sign_language/ddha.png
     - assets/sign_language/nna.png
+    - assets/numbers/1.png
+    - assets/numbers/2.png
+    - assets/numbers/3.png
+    - assets/numbers/4.png
+    - assets/numbers/5.png
+    - assets/numbers/6.png
+    - assets/numbers/7.png
+    - assets/numbers/8.png
+    - assets/numbers/9.png
 
 
   # The following line ensures that the Material Icons font is
