@@ -5,124 +5,121 @@ import '../Mathematics/module_video_logic.dart'; // Ensure that chapter_detail.d
 class SciencePage extends StatelessWidget {
   final List<Map<String, String>> chapters = [
     {
-      'title': 'Chapter 1: Introduction to Science',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_1', // Replace with actual video ID
+      'title': 'Introduction to Science: Chapter 1',
+      'videoId': 'nIjAEHi-6HU',
     },
     {
-      'title': 'Chapter 2: States of Matter',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_2', // Replace with actual video ID
+      'title': 'States of Matter: Chapter 2',
+      'videoId': '6Lb8PCw6vcc',
     },
     {
-      'title': 'Chapter 3: The Human Digestive System',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_3', // Replace with actual video ID
+      'title': 'The Human Digestive System: Chapter 3',
+      'videoId': 'Y_7WiIi_uTk',
     },
     {
-      'title': 'Chapter 4: The Solar System',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_4', // Replace with actual video ID
+      'title': 'The Solar System: Chapter 4',
+      'videoId': 'LljUaUMMCdg',
     },
     {
-      'title': 'Chapter 5: Chemical Reactions',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_5', // Replace with actual video ID
+      'title': 'Chemical Reactions: Chapter 5',
+      'videoId': 'nLG-B3e-pP0',
     },
     {
-      'title': 'Chapter 6: Ecosystems and Food Chains',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_6', // Replace with actual video ID
+      'title': 'Ecosystems and Food Chains: Chapter 6',
+      'videoId': 'pwnPigO4MuM',
     },
     {
-      'title': 'Chapter 7: Force and Motion',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_7', // Replace with actual video ID
+      'title': 'Force and Motion: Chapter 7',
+      'videoId': 'RDxX3fWFvzY',
     },
     {
-      'title': 'Chapter 8: Sound and Light',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_8', // Replace with actual video ID
+      'title': 'Sound and Light: Chapter 8',
+      'videoId': 'zMC0dTOVeUA',
     },
     {
-      'title': 'Chapter 9: The Periodic Table',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_9', // Replace with actual video ID
-    },
-    {
-      'title': 'Chapter 10: Electricity and Magnetism',
-      'videoId': 'VIDEO_ID_FOR_CHAPTER_10', // Replace with actual video ID
+      'title': 'The Periodic Table: Chapter 9',
+      'videoId': 'MjFpCgFgt1A',
     },
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF80D0C7), Color(0xFF13547A)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF80D0C7), Color(0xFF13547A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Science",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                "Science",
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: chapters.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChapterDetailPage(
-                              title: chapters[index]['title']!,
-                              videoId: chapters[index]['videoId']!,
-                            ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: chapters.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChapterDetailPage(
+                            title: chapters[index]['title']!,
+                            videoId: chapters[index]['videoId']!,
                           ),
-                        );
-                      },
-                      child: Card(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.play_circle_fill,
-                                  size: 40, color: Colors.deepPurpleAccent),
-                              SizedBox(width: 20),
-                              Text(
+                      );
+                    },
+                    child: Card(
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.play_circle_fill,
+                                size: 40, color: Colors.deepPurpleAccent),
+                            SizedBox(width: 20),
+                            Expanded(  // Added to prevent text overflow
+                              child: Text(
                                 chapters[index]['title']!,
                                 style: GoogleFonts.poppins(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
+                                overflow: TextOverflow.ellipsis, // Trims overflowed text
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
