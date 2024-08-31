@@ -78,7 +78,20 @@ dev_dependencies:
 flutter:
   assets:
     - assets/google_logo.png
+    - assets/sign_language/ka.png
+    - assets/sign_language/ca.png
+    - assets/sign_language/cha.png
+    - assets/sign_language/ga.png
+    - assets/sign_language/gha.png
+    - assets/sign_language/ja.png
+    - assets/sign_language/jha.png
     - assets/sign_language/kha.png
+    - assets/sign_language/nya.png
+    - assets/sign_language/tta.png
+    - assets/sign_language/ttha.png
+    - assets/sign_language/dda.png
+    - assets/sign_language/ddha.png
+    - assets/sign_language/nna.png
 
 
   # The following line ensures that the Material Icons font is
