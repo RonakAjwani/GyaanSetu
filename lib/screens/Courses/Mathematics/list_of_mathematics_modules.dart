@@ -5,13 +5,43 @@ import 'module_video_logic.dart'; // Ensure this import is correct
 class MathematicsPage extends StatelessWidget {
   final List<Map<String, String>> chapters = [
     {
-      'title': 'Chapter 1: Introduction to Algebra',
-      'videoId': 'FujZJe2sCgY',
+      'title': 'Chapter 1: Introduction to Shapes And Space',
+      'videoId': 'BGBS-CFn3YA',
     },
     {
-      'title': 'Chapter 2: Basic Operations',
-      'videoId': 'PLWwALcsb529M8_Q-2UawTbkl9WWrtnPkN&index=2',
+      'title': 'Chapter 2: Question on Shapes and Space',
+      'videoId': 't3JPr4VLafA',
     },
+    {
+      'title': 'Chapter 3: Numbers from 1 to 9',
+      'videoId': '27kD7WunkHI',
+    },
+    {
+      'title': 'Chapter 4: Exercise on 1 to 9',
+      'videoId': 'uO-_ZGeXSXQ',
+    },
+    {
+      'title': 'Chapter 6: Introduction to Shapes',
+      'videoId': 't3JPr4VLafA',
+    },
+    {
+      'title': 'Chapter 7: Introduction to Addition',
+      'videoId': '8jywPyKp364',
+    },
+    {
+      'title': 'Chapter 8: Exercise on Addition',
+      'videoId': 'WR6LXNOYwUU',
+    },
+    
+    {
+      'title': 'Chapter 9: Introduction to Subtraction',
+      'videoId': 'IAhrwiLCiFI',
+    },
+    {
+      'title': 'Chapter 10: Exercise on Subtraction',
+      'videoId': 'K49siiPUjU4',
+    },
+    
     // Add more chapters here...
   ];
 
