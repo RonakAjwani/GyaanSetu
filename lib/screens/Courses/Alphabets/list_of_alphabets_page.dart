@@ -49,7 +49,7 @@ class AlphabetsPage extends StatelessWidget {
           'Alphabets',
           style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.purpleAccent,
+        backgroundColor: Color.fromARGB(255, 200, 145, 255),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -106,7 +106,7 @@ class AlphabetsPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Colors.purpleAccent,
+                color: Color.fromARGB(255, 183, 111, 255),
               ),
             ),
             SizedBox(height: 10),

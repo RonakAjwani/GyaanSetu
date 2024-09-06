@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFF007AFF), // Solid color instead of gradient
+          color: Color.fromARGB(255, 186, 117, 255), // Solid color instead of gradient
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),

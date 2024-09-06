@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gyaan_setu/firebase_options.dart';
+import 'firebase_options.dart'; // Firebase options import
 import 'screens/SignUp/signup_screen.dart'; // Ensure these paths are correct
 import 'screens/Login/login_screen.dart';
 import 'screens/Profile/student_profile_screen.dart';
@@ -25,13 +25,58 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/', // Define the initial route
       routes: {
-        '/': (context) => SignUpScreen(), // SignUpScreen as the initial screen
+        '/': (context) => const WelcomePage(), // Welcome page as the initial screen
         '/login': (context) => LoginScreen(), // Define route for login screen
-        '/studentProfile': (context) =>
-            StudentProfileScreen(), // Define route for student profile screen
-        '/account': (context) =>
-            MyAccountPage(), // Define route for account page
+        '/signup': (context) => SignUpScreen(), // Define route for signup screen
+        '/studentProfile': (context) => StudentProfileScreen(), // Route for student profile
+        '/account': (context) => MyAccountPage(), // Route for account page
       },
+    );
+  }
+}
+
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+    
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/gyaansetu.logo.png', // Ensure correct path for logo
+              height: 100,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'GyaanSetu',
+              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+            ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: const Text('Login'),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text('Signup'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

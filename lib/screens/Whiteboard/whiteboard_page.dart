@@ -25,7 +25,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Whiteboard"),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: const Color.fromARGB(255, 188, 164, 255),
       ),
       body: Stack(
         children: [

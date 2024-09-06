@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.lightBlueAccent, Colors.blueAccent],
+                colors: [Color.fromARGB(255, 204, 162, 246), Color.fromARGB(255, 226, 204, 248)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -198,7 +198,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             const LinearProgressIndicator(
               value: 0.6,
               backgroundColor: Colors.grey,
-              color: Colors.blueAccent,
+              color: Color.fromARGB(255, 10, 11, 14),
             ),
             const SizedBox(height: 5),
             const Text(

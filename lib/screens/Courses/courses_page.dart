@@ -66,7 +66,7 @@ class _CoursesState extends State<Courses> {
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB2A4FF), Color(0xFFE7CFFF)],
+            colors: [Color.fromARGB(255, 204, 162, 246), Color.fromARGB(255, 226, 204, 248)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

@@ -19,7 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFF007AFF), // Solid color instead of gradient
+          color: Color.fromARGB(255, 232, 207, 255), // Solid color instead of gradient
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -39,19 +39,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 40,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
                         Text(
                           "Let's create an account",
                           style: GoogleFonts.poppins(
                             fontSize: 18,
-                            color: Colors.white70,
+                            color: const Color.fromARGB(179, 0, 0, 0),
                           ),
                         ),
                       ],
                     ),
-                    Icon(Icons.person_add_alt_1, color: Colors.white, size: 30),
+                    Icon(Icons.person_add_alt_1, color: const Color.fromARGB(255, 0, 0, 0), size: 30),
                   ],
                 ),
                 SizedBox(height: 40),
@@ -88,10 +88,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return TextField(
       decoration: InputDecoration(
         labelText: hintText,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+        labelStyle: TextStyle(color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.9)),
         filled: true,
         fillColor: Colors.white.withOpacity(0.2),
-        prefixIcon: Icon(icon, color: Colors.white),
+        prefixIcon: Icon(icon, color: const Color.fromARGB(255, 91, 91, 91)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
           borderSide: BorderSide.none,
@@ -101,7 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           borderSide: BorderSide(color: Colors.white, width: 1.5),
         ),
       ),
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
     );
   }
 
@@ -116,10 +116,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       decoration: InputDecoration(
         labelText: hintText,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+        labelStyle: TextStyle(color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.9)),
         filled: true,
         fillColor: Colors.white.withOpacity(0.2),
-        prefixIcon: Icon(icon, color: Colors.white),
+        prefixIcon: Icon(icon, color: const Color.fromARGB(255, 91, 91, 91)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.0),
           borderSide: BorderSide.none,
@@ -128,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           borderRadius: BorderRadius.circular(15.0),
           borderSide: BorderSide(color: Colors.white, width: 1.5),
         ),
-        suffixIcon: Icon(Icons.visibility_off, color: Colors.white70),
+        suffixIcon: Icon(Icons.visibility_off, color: const Color.fromARGB(179, 22, 22, 22)),
       ),
       style: TextStyle(color: Colors.white),
     );
@@ -174,17 +174,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         duration: Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
+          color: isSelected ? const Color.fromARGB(255, 159, 140, 159) : const Color.fromARGB(0, 99, 94, 94),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.white, width: 1.5),
           boxShadow: isSelected
-              ? [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 8, offset: Offset(0, 4))]
+              ? [BoxShadow(color: const Color.fromARGB(255, 3, 3, 3).withOpacity(0.2), blurRadius: 8, offset: Offset(0, 4))]
               : [],
         ),
         child: Text(
           role,
           style: TextStyle(
-            color: isSelected ? Color(0xFF007AFF) : Colors.white,
+            color: isSelected ? Color.fromARGB(255, 255, 255, 255) : Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -192,30 +192,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSignUpButton() {
-    return ElevatedButton(
-      onPressed: () {
-        // Handle sign-up logic here
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // White background for button
-        padding: EdgeInsets.symmetric(vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 6,
-        shadowColor: Colors.black.withOpacity(0.4),
-      ),
-      child: Center(
-        child: Text(
-          "Sign Up",
-          style: TextStyle(
-            fontSize: 18,
-            color: Color(0xFF007AFF),
-            fontWeight: FontWeight.bold,
-          ),
+ Widget _buildSignUpButton() {
+  return ElevatedButton(
+    onPressed: () {
+      // Handle sign-up logic here
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0), // White background for button
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8), // Adjust horizontal padding here
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 6,
+      shadowColor: Colors.black.withOpacity(0.4),
+    ),
+    child: Center(
+      child: Text(
+        "Sign Up",
+        style: TextStyle(
+          fontSize: 18,
+          color: const Color.fromARGB(255, 255, 255, 255),
+          fontWeight: FontWeight.bold,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildOrDivider() {
     return Row(
