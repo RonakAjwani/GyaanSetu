@@ -1,76 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:translator/translator.dart'; // Add this import for translation
+import 'package:google_fonts/google_fonts.dart';
+import 'package:translator/translator.dart';
 import '../Profile/student_profile_screen.dart';
-import '../Gamification/word_guess.dart'; // Import the game1.dart file
+import '../Gamification/word_guess.dart';
 import '../Courses/courses_page.dart';
 import '../Whiteboard/whiteboard_page.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  int _selectedIndex = 2; // Default to home tab
-  bool _isEnglishToGujarati = true; // Determines the language direction
-  String _outputText = ''; // Holds the translated text
-  final translator = GoogleTranslator(); // Initialize the translator
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  int _selectedIndex = 2;
+  bool _isEnglishToGujarati = true;
+  String _outputText = '';
+  final translator = GoogleTranslator();
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  bool _isTranslatorExpanded = false;
 
-  late AnimationController _animationController;
-  late Animation<double> _fadeInFadeOut;
+  // Updated color scheme
+  final Color primaryColor = Color(0xFF8E44AD); // Deep purple
+  final Color secondaryColor = Color(0xFF9B59B6); // Medium purple
+  final Color accentColor = Color(0xFFAF7AC5); // Light purple
+  final Color backgroundColor = Color(0xFFF4ECF7); // Very light purple
+  final Color textColor = Color(0xFF4A235A); // Dark purple
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
-      duration: const Duration(seconds: 1),
     );
-    _fadeInFadeOut =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
-
-    // Start animation when page loads
-    _animationController.forward();
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+    _controller.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if (_selectedIndex == 4) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => StudentProfileScreen()),
-        );
-      } else if (_selectedIndex == 3) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  WordGuessingGame()), // Navigate to game1.dart
-        );
-      } else if (_selectedIndex == 0) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Courses()), // Navigate to Courses page
-        );
-      } else if (_selectedIndex == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  WhiteboardPage()), // Navigate to Whiteboard page
-        );
-      }
     });
+    switch (index) {
+      case 0:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Courses()));
+        break;
+      case 1:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => WhiteboardPage()));
+        break;
+      case 3:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => WordGuessingGame()));
+        break;
+      case 4:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => StudentProfileScreen()));
+        break;
+    }
   }
 
   void _translateText(String text) async {
@@ -85,145 +88,160 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text(
+        title: Text(
           'GyaanSetu',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: GoogleFonts.nunito(
+            color: primaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
         ),
         centerTitle: true,
-        actions: <Widget>[
+        actions: [
           IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.black),
+            icon: Icon(Icons.notifications, color: primaryColor),
             onPressed: () {
               // Handle notification button press
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Notifications coming soon!')),
+              );
             },
           ),
-          const SizedBox(width: 20),
         ],
       ),
-      body: Stack(
-        children: <Widget>[
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromARGB(255, 204, 162, 246), Color.fromARGB(255, 226, 204, 248)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: kToolbarHeight + 20.0), // Pull everything down slightly
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // Welcome Section
-                  _buildWelcomeSection(),
-
-                  // Translator Section
-                  _buildQuickAccessSection(),
+      body: AnimationLimiter(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 375),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: widget,
+                  ),
+                ),
+                children: [
+                  _buildWelcomeCard(),
+                  SizedBox(height: 24),
+                  _buildQuickTranslator(),
+                  SizedBox(height: 24),
+                  _buildFeatureCards(),
                 ],
               ),
             ),
           ),
-        ],
+        ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
-  Widget _buildWelcomeSection() {
-    return FadeTransition(
-      opacity: _fadeInFadeOut,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(15.0),
-        margin: const EdgeInsets.symmetric(vertical: 15.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
+  Widget _buildWelcomeCard() {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              backgroundImage:
-                  const AssetImage('assets/images/user_profile.png'),
-              radius: 40,
-              backgroundColor: Colors.grey,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  padding: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.greenAccent,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Hero(
+                  tag: 'profile_image',
+                  child: CircleAvatar(
+                    backgroundImage:
+                        AssetImage('assets/images/user_profile.png'),
+                    radius: 30,
                   ),
-                  child: const Icon(Icons.check_circle,
-                      color: Colors.lightBlue, size: 14),
                 ),
-              ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome back, User!',
+                        style: GoogleFonts.nunito(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Continue your learning journey',
+                        style: GoogleFonts.nunito(
+                          fontSize: 14,
+                          color: textColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Welcome Back, [User Name]!',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 5),
-            const Text(
-              'Continue your journey of knowledge',
-              style: TextStyle(
+            SizedBox(height: 24),
+            Text(
+              'Current Course Progress',
+              style: GoogleFonts.nunito(
                 fontSize: 16,
-                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
-            const SizedBox(height: 10),
-            const LinearProgressIndicator(
-              value: 0.6,
-              backgroundColor: Colors.grey,
-              color: Color.fromARGB(255, 10, 11, 14),
-            ),
-            const SizedBox(height: 5),
-            const Text(
-              '60% of your current course completed',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                // Resume course action
+            SizedBox(height: 12),
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return LinearPercentIndicator(
+                  animation: true,
+                  animationDuration: 1500,
+                  lineHeight: 20.0,
+                  percent: _animation.value * 0.6,
+                  center: Text(
+                    "${(_animation.value * 60).toInt()}%",
+                    style: GoogleFonts.nunito(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  progressColor: primaryColor,
+                  backgroundColor: accentColor.withOpacity(0.2),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blueAccent,
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 20.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            ),
+            SizedBox(height: 24),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Resume course action
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Resuming your course...')),
+                  );
+                },
+                icon: Icon(Icons.play_arrow, color: Colors.white),
+                label: Text(
+                  'Resume Course',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
               ),
-              child:
-                  const Text('Resume Course', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
@@ -231,142 +249,198 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildQuickAccessSection() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const SizedBox(height: 15),
-          _buildTranslatorInputBox(),
-          const SizedBox(height: 15),
-          _buildTranslationOutputBox(),
-          const SizedBox(height: 15),
-          _buildLanguageSwitch(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTranslatorInputBox() {
-    return TextField(
-      maxLines: 1,
-      decoration: InputDecoration(
-        prefixIcon:
-            const Icon(Icons.translate, color: Color.fromARGB(60, 20, 0, 0)),
-        filled: true,
-        fillColor: Colors.white, // Set background color
-        hintText: _isEnglishToGujarati
-            ? 'Enter text in English'
-            : 'Enter text in Gujarati',
-        hintStyle: TextStyle(color: Colors.grey.shade400),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.white, width: 1.5),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.white, width: 1.5),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 15.0,
-          horizontal: 10.0,
-        ),
-      ),
-      onChanged: (text) {
-        _translateText(text); // Perform translation on text change
-      },
-    );
-  }
-
-  Widget _buildTranslationOutputBox() {
-    return Container(
-      padding: const EdgeInsets.all(15.0),
-      width: double.infinity,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        border: Border.all(color: Colors.blueAccent, width: 1.5),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ),
-      child: Text(
-        _outputText.isEmpty ? 'Translation will appear here' : _outputText,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.black87,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageSwitch() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              _isEnglishToGujarati =
-                  !_isEnglishToGujarati; // Toggle language direction
-            });
-          },
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.blueAccent,
-            padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+  Widget _buildQuickTranslator() {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isTranslatorExpanded = !_isTranslatorExpanded;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Quick Translator',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
+                  Icon(
+                    _isTranslatorExpanded
+                        ? Icons.expand_less
+                        : Icons.expand_more,
+                    color: primaryColor,
+                  ),
+                ],
+              ),
             ),
+            if (_isTranslatorExpanded) ...[
+              SizedBox(height: 20),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: _isEnglishToGujarati
+                      ? 'Enter English text'
+                      : 'Enter Gujarati text',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: primaryColor, width: 2),
+                  ),
+                ),
+                onChanged: _translateText,
+              ),
+              SizedBox(height: 20),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: accentColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color:
+                        _outputText.isEmpty ? Colors.transparent : primaryColor,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  _outputText.isEmpty
+                      ? 'Translation will appear here'
+                      : _outputText,
+                  style: GoogleFonts.nunito(color: textColor),
+                ),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _isEnglishToGujarati = !_isEnglishToGujarati;
+                    });
+                  },
+                  icon: Icon(Icons.swap_horiz, color: Colors.white),
+                  label: Text(
+                    _isEnglishToGujarati
+                        ? 'Switch to Gujarati'
+                        : 'Switch to English',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: secondaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeatureCards() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Quick Access',
+          style: GoogleFonts.nunito(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: primaryColor,
           ),
-          child: Text(
-            _isEnglishToGujarati
-                ? 'Switch to Gujarati to English'
-                : 'Switch to English to Gujarati',
-            style: const TextStyle(fontSize: 16),
-          ),
+        ),
+        SizedBox(height: 16),
+        GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            _buildFeatureCard('Courses', Icons.book, () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Courses()));
+            }),
+            _buildFeatureCard('Whiteboard', Icons.edit, () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WhiteboardPage()));
+            }),
+            _buildFeatureCard('Games', Icons.games, () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WordGuessingGame()));
+            }),
+            _buildFeatureCard('Profile', Icons.person, () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StudentProfileScreen()));
+            }),
+          ],
         ),
       ],
+    );
+  }
+
+  Widget _buildFeatureCard(String title, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 48, color: primaryColor),
+              SizedBox(height: 8),
+              Text(
+                title,
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book),
-          label: 'Courses',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.brush),
-          label: 'Whiteboard',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.videogame_asset),
-          label: 'Game',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Courses'),
+        BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Whiteboard'),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.games), label: 'Game'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.white, // Selected item color
-      unselectedItemColor: Colors.white70, // Unselected item color
-      backgroundColor: Colors.black, // Background color
+      selectedItemColor: primaryColor,
+      unselectedItemColor: textColor.withOpacity(0.5),
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      elevation: 8,
       onTap: _onItemTapped,
-      type: BottomNavigationBarType.fixed, // Label visibility
     );
   }
 }

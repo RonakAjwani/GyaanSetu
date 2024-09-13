@@ -12,11 +12,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _rememberMe = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   String? _errorMessage;
+  bool _obscurePassword = true;
+
+  // Updated color scheme
+  final Color primaryColor = Color(0xFF8E44AD); // Deep purple
+  final Color secondaryColor = Color(0xFF9B59B6); // Medium purple
+  final Color accentColor = Color(0xFFAF7AC5); // Light purple
+  final Color backgroundColor = Color(0xFFF4ECF7); // Very light purple
+  final Color textColor = Color(0xFF4A235A); // Dark purple
+  final Color errorColor = Color(0xFFE74C3C); // Keep red for errors
 
   @override
   void dispose() {
@@ -48,73 +56,51 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 186, 117, 255),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 80),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hi!\nWelcome",
-                          style: GoogleFonts.poppins(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          "Please log in to continue",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.lock_open, color: Colors.white, size: 30),
-                  ],
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildLogoAndAppName(),
+              SizedBox(height: 40),
+              Text(
+                "Welcome back!",
+                style: GoogleFonts.nunito(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
                 ),
-                SizedBox(height: 40),
-                _buildTextField(
-                    "Email or Phone Number", Icons.email, _emailController),
-                SizedBox(height: 20),
-                _buildPasswordTextField("Password", Icons.lock),
-                SizedBox(height: 5),
-                _buildRememberMe(),
-                SizedBox(height: 30),
-                _buildLoginButton(),
-                if (_errorMessage != null)
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Text(
-                      _errorMessage!,
-                      style: TextStyle(color: Colors.red),
-                    ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "Log in to continue your learning journey",
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  color: textColor,
+                ),
+              ),
+              SizedBox(height: 40),
+              _buildTextField("Email", Icons.email, _emailController),
+              SizedBox(height: 16),
+              _buildPasswordTextField(
+                  "Password", Icons.lock, _passwordController),
+              SizedBox(height: 24),
+              _buildForgotPasswordText(context),
+              SizedBox(height: 32),
+              _buildLoginButton(),
+              if (_errorMessage != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(color: errorColor),
                   ),
-                SizedBox(height: 30),
-                _buildStudentLoginButton(),
-                SizedBox(height: 30),
-                _buildForgotPasswordText(context),
-                SizedBox(height: 20),
-                _buildOrDivider(),
-                SizedBox(height: 20),
-                _buildGoogleLoginButton(),
-                SizedBox(height: 30),
-                _buildSignUpText(context),
-              ],
-            ),
+                ),
+              SizedBox(height: 24),
+              _buildSignUpText(context),
+            ],
           ),
         ),
       ),
@@ -123,131 +109,121 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTextField(
       String hintText, IconData icon, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: hintText,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
-        prefixIcon: Icon(icon, color: Colors.white),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          borderSide: BorderSide(color: Colors.white, width: 1.5),
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
       ),
-      style: TextStyle(color: Colors.white),
-    );
-  }
-
-  Widget _buildPasswordTextField(String hintText, IconData icon) {
-    return TextField(
-      controller: _passwordController,
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: hintText,
-        labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
-        prefixIcon: Icon(icon, color: Colors.white),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          borderSide: BorderSide(color: Colors.white, width: 1.5),
-        ),
-        suffixIcon: Icon(Icons.visibility_off, color: Colors.white70),
-      ),
-      style: TextStyle(color: Colors.white),
-    );
-  }
-
-  Widget _buildRememberMe() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Checkbox(
-              value: _rememberMe,
-              onChanged: (bool? value) {
-                setState(() {
-                  _rememberMe = value ?? false;
-                });
-              },
-              activeColor: Colors.white,
-              checkColor: Colors.blue,
-            ),
-            Text(
-              "Remember Me",
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-        TextButton(
-          onPressed: () {
-            // Handle forgot password logic
-          },
-          child: Text(
-            "Forgot Password?",
-            style: TextStyle(color: Colors.white),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          filled: true,
+          fillColor: Colors.white,
+          prefixIcon: Icon(icon, color: secondaryColor),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: primaryColor, width: 2.0),
           ),
         ),
-      ],
+        style: GoogleFonts.nunito(color: textColor),
+      ),
+    );
+  }
+
+  Widget _buildPasswordTextField(
+      String hintText, IconData icon, TextEditingController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: _obscurePassword,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          filled: true,
+          fillColor: Colors.white,
+          prefixIcon: Icon(icon, color: secondaryColor),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+              color: textColor.withOpacity(0.6),
+            ),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: primaryColor, width: 2.0),
+          ),
+        ),
+        style: GoogleFonts.nunito(color: textColor),
+      ),
     );
   }
 
   Widget _buildLoginButton() {
-    return ElevatedButton(
-      onPressed: _login,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 6,
-        shadowColor: Colors.black.withOpacity(0.4),
+    return Container(
+      width: double.infinity,
+      height: 56,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: primaryColor.withOpacity(0.3),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
       ),
-      child: Center(
+      child: ElevatedButton(
+        onPressed: _login,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 0,
+        ),
         child: Text(
           "Log In",
-          style: TextStyle(
+          style: GoogleFonts.nunito(
             fontSize: 18,
-            color: Color(0xFF007AFF),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStudentLoginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        // Navigate to student profile after successful login
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 6,
-        shadowColor: Colors.black.withOpacity(0.4),
-      ),
-      child: Center(
-        child: Text(
-          "Log In as Student",
-          style: TextStyle(
-            fontSize: 18,
-            color: Color(0xFF007AFF),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -256,67 +232,22 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildForgotPasswordText(BuildContext context) {
-    return Center(
-      child: RichText(
-        text: TextSpan(
-          text: "",
-          style: TextStyle(color: Colors.white70, fontSize: 14),
-          children: [
-            TextSpan(
-              text: "Forgot Password?",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  // Navigate to the ForgotPasswordScreen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen()),
-                  );
-                },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOrDivider() {
-    return Row(
-      children: [
-        Expanded(child: Divider(thickness: 1.5, color: Colors.white70)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text(
-            "OR",
-            style: TextStyle(color: Colors.white70, fontSize: 16),
-          ),
-        ),
-        Expanded(child: Divider(thickness: 1.5, color: Colors.white70)),
-      ],
-    );
-  }
-
-  Widget _buildGoogleLoginButton() {
-    return Center(
-      child: OutlinedButton.icon(
-        onPressed: () {
-          // Handle Google login logic here
+    return Align(
+      alignment: Alignment.centerRight,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+          );
         },
-        icon: Image.asset('assets/google_logo.png', width: 24),
-        label: Text(
-          "Continue with Google",
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          backgroundColor: Colors.transparent,
-          side: BorderSide(color: Colors.white, width: 1.5),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Text(
+          "Forgot Password?",
+          style: GoogleFonts.nunito(
+            color: secondaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
         ),
       ),
     );
@@ -327,27 +258,66 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RichText(
         text: TextSpan(
           text: "Don't have an account? ",
-          style: TextStyle(color: Colors.white70, fontSize: 14),
+          style: GoogleFonts.nunito(color: textColor, fontSize: 16),
           children: [
             TextSpan(
               text: "Sign Up",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
+              style: GoogleFonts.nunito(
+                color: secondaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SignUpScreen()), // Navigate to SignUpScreen
+                    MaterialPageRoute(builder: (context) => SignUpScreen()),
                   );
                 },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLogoAndAppName() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/gyaansetu.logo.png',
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(width: 16),
+        Text(
+          "GyaanSetu",
+          style: GoogleFonts.nunito(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: primaryColor,
+          ),
+        ),
+      ],
     );
   }
 }
