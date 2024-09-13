@@ -1,14 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart'; // Firebase options import
 import 'screens/SignUp/signup_screen.dart'; // Ensure these paths are correct
 import 'screens/Login/login_screen.dart';
 import 'screens/Profile/student_profile_screen.dart';
 import 'screens/Profile/my_account_page.dart'; // Import the MyAccountPage
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+void main() {
   runApp(const MyApp());
 }
 
@@ -25,10 +21,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/', // Define the initial route
       routes: {
-        '/': (context) => const WelcomePage(), // Welcome page as the initial screen
+        '/': (context) =>
+            const WelcomePage(), // Welcome page as the initial screen
         '/login': (context) => LoginScreen(), // Define route for login screen
-        '/signup': (context) => SignUpScreen(), // Define route for signup screen
-        '/studentProfile': (context) => StudentProfileScreen(), // Route for student profile
+        '/signup': (context) =>
+            SignUpScreen(), // Define route for signup screen
+        '/studentProfile': (context) =>
+            StudentProfileScreen(), // Route for student profile
         '/account': (context) => MyAccountPage(), // Route for account page
       },
     );
@@ -41,7 +40,6 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
