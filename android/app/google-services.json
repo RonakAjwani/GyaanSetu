@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "453859984245",
-    "project_id": "gyaansetu-e4884",
-    "storage_bucket": "gyaansetu-e4884.appspot.com"
+    "project_number": "304893577200",
+    "project_id": "gyaansetu-35c00",
+    "storage_bucket": "gyaansetu-35c00.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:453859984245:android:99eaa2f44fa9868598493c",
+        "mobilesdk_app_id": "1:304893577200:android:5be78af13fe7b8974bff35",
         "android_client_info": {
           "package_name": "com.example.gyaan_setu"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyABhT5KUMAPOufg7UdVxBXejVOAl0_H3DY"
+          "current_key": "AIzaSyDkKMcL0sCdMuOakAvd0xD4f3hpTI1cDS0"
         }
       ],
       "services": {

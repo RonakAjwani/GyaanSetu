@@ -1,11 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'screens/SignUp/signup_screen.dart'; // Ensure these paths are correct
+import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/SignUp/signup_screen.dart';
 import 'screens/Login/login_screen.dart';
 import 'screens/Profile/student_profile_screen.dart';
-import 'screens/Profile/my_account_page.dart'; // Import the MyAccountPage
+import 'screens/Profile/my_account_page.dart';
+import 'screens/Home/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,16 +27,31 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/', // Define the initial route
+      home: AuthWrapper(),
       routes: {
-        '/': (context) =>
-            const WelcomePage(), // Welcome page as the initial screen
-        '/login': (context) => LoginScreen(), // Define route for login screen
-        '/signup': (context) =>
-            SignUpScreen(), // Define route for signup screen
-        '/studentProfile': (context) =>
-            StudentProfileScreen(), // Route for student profile
-        '/account': (context) => MyAccountPage(), // Route for account page
+        '/login': (context) => LoginScreen(),
+        '/signup': (context) => SignUpScreen(),
+        '/studentProfile': (context) => StudentProfileScreen(),
+        '/account': (context) => MyAccountPage(),
+        '/home': (context) => HomePage(),
+      },
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+          return HomePage();
+        } else {
+          return WelcomePage();
+        }
       },
     );
   }

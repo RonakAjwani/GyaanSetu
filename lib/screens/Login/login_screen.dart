@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
-import '../SignUp/signup_screen.dart'; // Import the SignUpScreen
-import 'forgot_password_screen.dart'; // Import the ForgotPasswordScreen
-import '../Home/home_page.dart'; // Import the StudentProfileScreen
+import '../SignUp/signup_screen.dart';
+import 'forgot_password_screen.dart';
+import '../Home/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,6 +13,37 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    setState(() {
+      _errorMessage = null;
+    });
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 186, 117, 255), // Solid color instead of gradient
+          color: Color.fromARGB(255, 186, 117, 255),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -27,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 80), // Spacing from status bar
+                SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -55,15 +87,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 SizedBox(height: 40),
-                _buildTextField("Email or Phone Number", Icons.email),
+                _buildTextField(
+                    "Email or Phone Number", Icons.email, _emailController),
                 SizedBox(height: 20),
                 _buildPasswordTextField("Password", Icons.lock),
                 SizedBox(height: 5),
                 _buildRememberMe(),
                 SizedBox(height: 30),
                 _buildLoginButton(),
+                if (_errorMessage != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
                 SizedBox(height: 30),
-                _buildStudentLoginButton(), // Add this line
+                _buildStudentLoginButton(),
                 SizedBox(height: 30),
                 _buildForgotPasswordText(context),
                 SizedBox(height: 20),
@@ -80,8 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(String hintText, IconData icon) {
+  Widget _buildTextField(
+      String hintText, IconData icon, TextEditingController controller) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         labelText: hintText,
         labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
@@ -103,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildPasswordTextField(String hintText, IconData icon) {
     return TextField(
+      controller: _passwordController,
       obscureText: true,
       decoration: InputDecoration(
         labelText: hintText,
@@ -161,11 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildLoginButton() {
     return ElevatedButton(
-      onPressed: () {
-        // Handle login logic here
-      },
+      onPressed: _login,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // White background for button
+        backgroundColor: Colors.white,
         padding: EdgeInsets.symmetric(vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 6,
@@ -194,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // White background for button
+        backgroundColor: Colors.white,
         padding: EdgeInsets.symmetric(vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 6,
