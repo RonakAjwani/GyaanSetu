@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../../widgets/constant_app_bar.dart';
 
 class ChapterDetailPage extends StatefulWidget {
   final String title;
@@ -36,22 +37,18 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title, style: GoogleFonts.poppins()),
-        backgroundColor: Colors.purpleAccent,
-      ),
+      appBar: ConstantAppBar(title: widget.title),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // YouTube Video Player
             Container(
               margin: EdgeInsets.symmetric(vertical: 20),
               child: YoutubePlayer(
                 controller: _controller,
                 showVideoProgressIndicator: true,
+                progressIndicatorColor: Color(0xFF2E8BC0),
               ),
             ),
-            // Gujarati Translation Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -59,10 +56,10 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                 children: [
                   Text(
                     "Gujarati Translation",
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.purpleAccent,
+                      color: Color(0xFF1A5F7A),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -81,9 +78,9 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                     ),
                     child: Text(
                       "Here will be the Gujarati translation for the video. You can update this text to reflect the translation of each chapter's video.",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.roboto(
                         fontSize: 16,
-                        color: Colors.black87,
+                        color: Color(0xFF333333),
                       ),
                     ),
                   ),

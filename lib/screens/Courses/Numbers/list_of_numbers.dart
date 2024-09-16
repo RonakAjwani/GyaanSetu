@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaan_setu/screens/Courses/Numbers/whiteboard_numbers.dart';
+import '../../../widgets/constant_app_bar.dart';
 
 class NumbersPage extends StatelessWidget {
   final List<Map<String, String>> numbers = [
-    {"number": "૦", "text": "zero"},
+    {"number": "૦", "text": "Zero"},
     {"number": "૧", "text": "1"},
     {"number": "૨", "text": "2"},
     {"number": "૩", "text": "3"},
@@ -19,13 +20,7 @@ class NumbersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Numbers',
-          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Color.fromARGB(255, 200, 145, 255),
-      ),
+      appBar: ConstantAppBar(title: 'Numbers'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
@@ -80,7 +75,7 @@ class NumbersPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 183, 111, 255),
+                color: Color(0xFF2E8BC0),
               ),
             ),
             SizedBox(height: 10),

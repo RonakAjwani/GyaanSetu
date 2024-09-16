@@ -1,161 +1,242 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/gestures.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _buttonAnimation;
-
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
-  String _errorMessage = '';
+  final _auth = FirebaseAuth.instance;
+  String? _errorMessage;
+  String? _successMessage;
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Initialize the animation controller
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-
-    _buttonAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-  }
+  // Color scheme
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+  final Color lightTextColor = Color(0xFF757575);
+  final Color errorColor = Color(0xFFD62828);
 
   @override
   void dispose() {
-    _controller.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
-  void _validateInput() {
+  Future<void> _resetPassword() async {
     setState(() {
-      if (_emailController.text.isEmpty ||
-          (!_emailController.text.contains('@') &&
-              !_emailController.text.contains(RegExp(r'^[0-9]+$')))) {
-        _errorMessage = 'Please enter a valid email or phone number';
-      } else {
-        _errorMessage = '';
-        // Proceed with the forgot password logic
-      }
+      _errorMessage = null;
+      _successMessage = null;
     });
+
+    if (_emailController.text.isEmpty) {
+      setState(() {
+        _errorMessage = 'Please enter your email address';
+      });
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
+      setState(() {
+        _successMessage = 'Password reset email sent. Check your inbox.';
+      });
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: primaryColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _buildLogoAndAppName(),
+              SizedBox(height: 40),
               Text(
-                "Oh, no!",
-                style: GoogleFonts.poppins(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
+                "Forgot Password",
+                style: GoogleFonts.roboto(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
                 ),
+                textAlign: TextAlign.center,
               ),
+              SizedBox(height: 16),
               Text(
-                "I forgot",
-                style: GoogleFonts.poppins(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Enter your email or phone number and we'll send you a link to change a new password.",
-                style: GoogleFonts.poppins(
+                "Enter your email address and we'll send you a link to reset your password.",
+                style: GoogleFonts.roboto(
                   fontSize: 16,
-                  color: Colors.black54,
+                  color: textColor,
                 ),
+                textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email or Phone Number',
-                  labelStyle: TextStyle(color: Colors.black54),
-                  errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black87),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              ScaleTransition(
-                scale: _buttonAnimation,
-                child: ElevatedButton(
-                  onPressed: () {
-                    _controller.forward().then((value) => _controller.reverse());
-                    _validateInput();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black87,
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Proceed",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+              SizedBox(height: 40),
+              _buildTextField("Email", Icons.email, _emailController),
+              SizedBox(height: 32),
+              _buildResetButton(),
+              if (_errorMessage != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(color: errorColor),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Didn't receive the link? ",
-                    style: TextStyle(color: Colors.black54),
-                    children: [
-                      TextSpan(
-                        text: "Send again",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Handle resend link tap
-                          },
-                      ),
-                    ],
+              if (_successMessage != null)
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text(
+                    _successMessage!,
+                    style: TextStyle(color: Colors.green),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              ),
+              SizedBox(height: 24),
+              _buildBackToLoginText(context),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(
+      String hintText, IconData icon, TextEditingController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: GoogleFonts.roboto(color: lightTextColor),
+          filled: true,
+          fillColor: Colors.white,
+          prefixIcon: Icon(icon, color: primaryColor, size: 24),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: secondaryColor, width: 2.0),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        ),
+        style: GoogleFonts.roboto(color: textColor, fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _buildResetButton() {
+    return Container(
+      height: 56,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withOpacity(0.3),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: _resetPassword,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: accentColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 0,
+        ),
+        child: Text(
+          "Reset Password",
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            color: textColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackToLoginText(BuildContext context) {
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          text: "Remember your password? ",
+          style: GoogleFonts.roboto(color: textColor, fontSize: 16),
+          children: [
+            TextSpan(
+              text: "Log in",
+              style: GoogleFonts.roboto(
+                color: secondaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.pop(context);
+                },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogoAndAppName() {
+    return Column(
+      children: [
+        SvgPicture.asset(
+          'assets/app_logo.svg',
+          width: 120,
+          height: 120,
+        ),
+        SizedBox(height: 16),
+        Text(
+          "GyaanSetu",
+          style: GoogleFonts.roboto(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: primaryColor,
+          ),
+        ),
+      ],
     );
   }
 }

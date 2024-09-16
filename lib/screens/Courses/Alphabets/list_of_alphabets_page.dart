@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gyaan_setu/screens/Courses/Alphabets/whiteboard_alphabet.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'whiteboard_alphabet.dart';
 
-// AlphabetsPage: Displays a grid of Gujarati alphabets
 class AlphabetsPage extends StatelessWidget {
   final List<Map<String, String>> alphabets = [
     {"alphabet": "ક", "transliteration": "ka"},
@@ -41,32 +41,59 @@ class AlphabetsPage extends StatelessWidget {
     {"alphabet": "હ", "transliteration": "ha"},
   ];
 
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Alphabets',
-          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Color.fromARGB(255, 200, 145, 255),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
+          'Gujarati Alphabets',
+          style: GoogleFonts.roboto(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Changed to white for better visibility
           ),
-          itemCount: alphabets.length,
-          itemBuilder: (context, index) {
-            return _buildAlphabetCard(
-              context,
-              alphabets[index]['alphabet']!,
-              alphabets[index]['transliteration']!,
-            );
-          },
+        ),
+        backgroundColor: primaryColor,
+        iconTheme: IconThemeData(
+            color: Colors.white), // Added this line to change back button color
+        elevation: 0, // Added elevation for better separation from the body
+      ),
+      body: Container(
+        color: backgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: AnimationLimiter(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: alphabets.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredGrid(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  columnCount: 3,
+                  child: ScaleAnimation(
+                    child: FadeInAnimation(
+                      child: _buildAlphabetCard(
+                        context,
+                        alphabets[index]['alphabet']!,
+                        alphabets[index]['transliteration']!,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -93,8 +120,8 @@ class AlphabetsPage extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
-              blurRadius: 10,
-              spreadRadius: 5,
+              blurRadius: 5,
+              spreadRadius: 1,
             ),
           ],
         ),
@@ -103,19 +130,19 @@ class AlphabetsPage extends StatelessWidget {
           children: [
             Text(
               alphabet,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.roboto(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 183, 111, 255),
+                color: secondaryColor,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 8),
             Text(
               '[$transliteration]',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
+              style: GoogleFonts.roboto(
+                fontSize: 16,
                 fontWeight: FontWeight.normal,
-                color: Colors.grey[800],
+                color: textColor,
               ),
             ),
           ],

@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
 import '../Profile/student_profile_screen.dart';
-import '../Gamification/word_guess.dart';
+import '../Gamification/games_hub.dart';
 import '../Courses/courses_page.dart';
 import '../Whiteboard/whiteboard_page.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../widgets/constant_bottom_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,15 +26,17 @@ class _HomePageState extends State<HomePage>
   String _outputText = '';
   final translator = GoogleTranslator();
   late AnimationController _controller;
-  late Animation<double> _animation;
   bool _isTranslatorExpanded = false;
+  String _userName = 'User';
 
-  // Updated color scheme
-  final Color primaryColor = Color(0xFF8E44AD); // Deep purple
-  final Color secondaryColor = Color(0xFF9B59B6); // Medium purple
-  final Color accentColor = Color(0xFFAF7AC5); // Light purple
-  final Color backgroundColor = Color(0xFFF4ECF7); // Very light purple
-  final Color textColor = Color(0xFF4A235A); // Dark purple
+  // Color scheme
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+  final Color lightTextColor = Color(0xFF757575);
+  final Color errorColor = Color(0xFFD62828);
 
   @override
   void initState() {
@@ -39,17 +45,29 @@ class _HomePageState extends State<HomePage>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
     _controller.forward();
+    _fetchUserName();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _fetchUserName() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      if (userData.exists) {
+        setState(() {
+          _userName = userData['fullName'] ?? 'User';
+        });
+      }
+    }
   }
 
   void _onItemTapped(int index) {
@@ -66,8 +84,8 @@ class _HomePageState extends State<HomePage>
             context, MaterialPageRoute(builder: (context) => WhiteboardPage()));
         break;
       case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => WordGuessingGame()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => GamesHub()));
         break;
       case 4:
         Navigator.push(context,
@@ -89,35 +107,11 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          'GyaanSetu',
-          style: GoogleFonts.nunito(
-            color: primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: primaryColor),
-            onPressed: () {
-              // Handle notification button press
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Notifications coming soon!')),
-              );
-            },
-          ),
-        ],
-      ),
-      body: AnimationLimiter(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: AnimationConfiguration.toStaggeredList(
@@ -129,6 +123,8 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
                 children: [
+                  _buildHeader(),
+                  SizedBox(height: 24),
                   _buildWelcomeCard(),
                   SizedBox(height: 24),
                   _buildQuickTranslator(),
@@ -140,110 +136,152 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: ConstantBottomNavBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            SvgPicture.asset(
+              'assets/app_logo.svg',
+              width: 40,
+              height: 40,
+            ),
+            SizedBox(width: 12),
+            Text(
+              'GyaanSetu',
+              style: GoogleFonts.roboto(
+                color: primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          icon: Icon(Icons.notifications, color: primaryColor),
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Notifications coming soon!')),
+            );
+          },
+        ),
+      ],
     );
   }
 
   Widget _buildWelcomeCard() {
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Hero(
-                  tag: 'profile_image',
-                  child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/user_profile.png'),
-                    radius: 30,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome back, User!',
-                        style: GoogleFonts.nunito(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor,
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [primaryColor, secondaryColor],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Hero(
+                    tag: 'profile_image',
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/user_profile.png'),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Continue your learning journey',
-                        style: GoogleFonts.nunito(
-                          fontSize: 14,
-                          color: textColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Current Course Progress',
-              style: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: textColor,
-              ),
-            ),
-            SizedBox(height: 12),
-            AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return LinearPercentIndicator(
-                  animation: true,
-                  animationDuration: 1500,
-                  lineHeight: 20.0,
-                  percent: _animation.value * 0.6,
-                  center: Text(
-                    "${(_animation.value * 60).toInt()}%",
-                    style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: primaryColor,
-                  backgroundColor: accentColor.withOpacity(0.2),
-                );
-              },
-            ),
-            SizedBox(height: 24),
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // Resume course action
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Resuming your course...')),
-                  );
-                },
-                icon: Icon(Icons.play_arrow, color: Colors.white),
-                label: Text(
-                  'Resume Course',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Welcome back,',
+                          style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                        ),
+                        Text(
+                          _userName,
+                          style: GoogleFonts.roboto(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Your Progress',
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 8),
+              LinearPercentIndicator(
+                animation: true,
+                lineHeight: 20.0,
+                animationDuration: 2500,
+                percent: 0.8,
+                center: Text(
+                  "80.0%",
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                linearStrokeCap: LinearStrokeCap.roundAll,
+                progressColor: accentColor,
+                backgroundColor: Colors.white.withOpacity(0.3),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Courses()));
+                },
+                child: Text('Continue Learning'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: primaryColor,
+                  backgroundColor: accentColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -252,7 +290,7 @@ class _HomePageState extends State<HomePage>
   Widget _buildQuickTranslator() {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         padding: const EdgeInsets.all(20.0),
@@ -268,13 +306,19 @@ class _HomePageState extends State<HomePage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Quick Translator',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor,
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.translate, color: primaryColor),
+                      SizedBox(width: 12),
+                      Text(
+                        'Quick Translator',
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                   Icon(
                     _isTranslatorExpanded
@@ -293,21 +337,23 @@ class _HomePageState extends State<HomePage>
                       ? 'Enter English text'
                       : 'Enter Gujarati text',
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(12)),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: primaryColor, width: 2),
                   ),
+                  filled: true,
+                  fillColor: Colors.grey[100],
                 ),
                 onChanged: _translateText,
               ),
               SizedBox(height: 20),
               AnimatedContainer(
                 duration: Duration(milliseconds: 300),
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  color: secondaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color:
                         _outputText.isEmpty ? Colors.transparent : primaryColor,
@@ -318,7 +364,7 @@ class _HomePageState extends State<HomePage>
                   _outputText.isEmpty
                       ? 'Translation will appear here'
                       : _outputText,
-                  style: GoogleFonts.nunito(color: textColor),
+                  style: GoogleFonts.roboto(color: textColor, fontSize: 16),
                 ),
               ),
               SizedBox(height: 20),
@@ -337,10 +383,10 @@ class _HomePageState extends State<HomePage>
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: secondaryColor,
+                    backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                   ),
                 ),
               ),
@@ -357,8 +403,8 @@ class _HomePageState extends State<HomePage>
       children: [
         Text(
           'Quick Access',
-          style: GoogleFonts.nunito(
-            fontSize: 18,
+          style: GoogleFonts.roboto(
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: primaryColor,
           ),
@@ -380,8 +426,8 @@ class _HomePageState extends State<HomePage>
                   MaterialPageRoute(builder: (context) => WhiteboardPage()));
             }),
             _buildFeatureCard('Games', Icons.games, () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => WordGuessingGame()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => GamesHub()));
             }),
             _buildFeatureCard('Profile', Icons.person, () {
               Navigator.push(
@@ -400,17 +446,28 @@ class _HomePageState extends State<HomePage>
       onTap: onTap,
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
           padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                secondaryColor.withOpacity(0.1),
+                primaryColor.withOpacity(0.1)
+              ],
+            ),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 48, color: primaryColor),
-              SizedBox(height: 8),
+              SizedBox(height: 12),
               Text(
                 title,
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.roboto(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: textColor,
@@ -421,26 +478,6 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Courses'),
-        BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Whiteboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.games), label: 'Game'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: primaryColor,
-      unselectedItemColor: textColor.withOpacity(0.5),
-      showUnselectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      onTap: _onItemTapped,
     );
   }
 }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/cupertino.dart'; // For CupertinoIcons
-import 'Mathematics/list_of_mathematics_modules.dart'; // Import your MathematicsPage
-import 'Science/list_of_science_modules.dart'; // Import your SciencePage
-import 'Alphabets/list_of_alphabets_page.dart'; // Import your AlphabetsPage
-import 'Numbers/list_of_numbers.dart'; // Import your NumbersPage
-import '../Whiteboard/whiteboard_page.dart'; // Import WhiteboardPage
-import '../Profile/student_profile_screen.dart'; // Import StudentProfileScreen
-import '../Gamification/word_guess.dart'; // Import Game1 (Word Guessing Game)
-import '../Home/home_page.dart'; // Import HomePage
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '../../widgets/constant_app_bar.dart';
+import '../../widgets/constant_bottom_nav_bar.dart';
+import 'Mathematics/list_of_mathematics_modules.dart';
+import 'Science/list_of_science_modules.dart';
+import 'Alphabets/list_of_alphabets_page.dart';
+import 'Numbers/list_of_numbers.dart';
+import '../Whiteboard/whiteboard_page.dart';
+import '../Home/home_page.dart';
+import '../Gamification/games_hub.dart';
+import '../Profile/student_profile_screen.dart';
 
 class Courses extends StatefulWidget {
   @override
@@ -16,45 +18,39 @@ class Courses extends StatefulWidget {
 }
 
 class _CoursesState extends State<Courses> {
-  int _selectedIndex = 0; // Default to courses tab
+  int _selectedIndex = 0; // Set to 0 for Courses page
+
+  // Color scheme
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+  final Color lightTextColor = Color(0xFF757575);
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-
-    // Navigate to the corresponding page based on the selected index
     switch (index) {
       case 0:
-        // Stay on Courses page
+        // Already on Courses page, no navigation needed
         break;
       case 1:
-        // Navigate to Whiteboard page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WhiteboardPage()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => WhiteboardPage()));
         break;
       case 2:
-        // Navigate to Home page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
         break;
       case 3:
-        // Navigate to Game page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WordGuessingGame()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => GamesHub()));
         break;
       case 4:
-        // Navigate to Profile page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => StudentProfileScreen()),
-        );
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => StudentProfileScreen()));
         break;
     }
   }
@@ -62,213 +58,154 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color.fromARGB(255, 204, 162, 246), Color.fromARGB(255, 226, 204, 248)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Top Section (Welcome Message and Flag Icon)
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: backgroundColor,
+      appBar: ConstantAppBar(title: 'Courses'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Available Courses',
+                  style: GoogleFonts.roboto(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: primaryColor,
+                  ),
+                ),
+                SizedBox(height: 16),
+                AnimationLimiter(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(milliseconds: 375),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        horizontalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: widget,
+                        ),
+                      ),
                       children: [
-                        Text(
-                          "Alan",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
+                        _buildCourseCard(
+                          title: 'Alphabets',
+                          icon: Icons.abc,
+                          color: secondaryColor,
+                          progress: 0.7,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AlphabetsPage()),
                           ),
                         ),
-                        SizedBox(height: 5),
-                        Text(
-                          "Start Your Learnings!",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
+                        _buildCourseCard(
+                          title: 'Numbers',
+                          icon: Icons.numbers,
+                          color: secondaryColor,
+                          progress: 0.5,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NumbersPage()),
+                          ),
+                        ),
+                        _buildCourseCard(
+                          title: 'Mathematics',
+                          icon: Icons.calculate,
+                          color: secondaryColor,
+                          progress: 0.3,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MathematicsPage()),
+                          ),
+                        ),
+                        _buildCourseCard(
+                          title: 'Science',
+                          icon: Icons.science,
+                          color: secondaryColor,
+                          progress: 0.1,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SciencePage()),
                           ),
                         ),
                       ],
                     ),
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage('assets/flag.png'),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              // "Your Lessons" Header
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Your Lessons",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal,
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              // Course Cards Section
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: [
-                      _buildCourseCard(
-                        icon: Icons.book,
-                        title: "Alphabets",
-                        progress: 0.74,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AlphabetsPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      _buildCourseCard(
-                        icon: Icons.confirmation_number,
-                        title: "Numbers",
-                        progress: 0.74,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NumbersPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      _buildCourseCard(
-                        icon: Icons.calculate,
-                        title: "Mathematics",
-                        progress: 0.45,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MathematicsPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      _buildCourseCard(
-                        icon: Icons.science,
-                        title: "Science",
-                        progress: 0.32,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SciencePage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: ConstantBottomNavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.white, // Color for selected item
-        unselectedItemColor: Colors.white70, // Color for unselected items
-        backgroundColor: Colors.black, // Background color
-        type: BottomNavigationBarType.fixed, // Keep labels visible
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: "Courses",
-          ),
-          BottomNavigationBarItem(
-            icon:
-                Icon(CupertinoIcons.bars), // Use CupertinoIcons for Whiteboard
-            label: "Whiteboard",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.videogame_asset),
-            label: "Game",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-        ],
       ),
     );
   }
 
-  Widget _buildCourseCard(
-      {required IconData icon,
-      required String title,
-      required double progress,
-      required VoidCallback onTap}) {
+  Widget _buildCourseCard({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required double progress,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 5,
-              offset: Offset(2, 2),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [color.withOpacity(0.1), color.withOpacity(0.2)],
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 40, color: Colors.blueAccent),
-              SizedBox(height: 10),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 48, color: color),
+                SizedBox(height: 12),
+                Text(
+                  title,
+                  style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox(height: 10),
-              LinearProgressIndicator(
-                value: progress,
-                backgroundColor: Colors.grey[200],
-                color: Colors.blueAccent,
-              ),
-            ],
+                SizedBox(height: 12),
+                LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Colors.grey[300],
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '${(progress * 100).toInt()}% Complete',
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    color: lightTextColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

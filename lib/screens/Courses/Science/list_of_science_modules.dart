@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Mathematics/module_video_logic.dart'; // Ensure that chapter_detail.dart is correctly imported
+import '../module_video_logic.dart'; // We'll reuse this for video playback
+import '../../../widgets/constant_app_bar.dart';
 
 class SciencePage extends StatelessWidget {
   final List<Map<String, String>> chapters = [
@@ -9,7 +10,7 @@ class SciencePage extends StatelessWidget {
       'videoId': 'nIjAEHi-6HU',
     },
     {
-      'title': 'Ch-2 Components of Fod with QR',
+      'title': 'Ch-2 Components of Food with QR',
       'videoId': '6Lb8PCw6vcc',
     },
     {
@@ -43,83 +44,50 @@ class SciencePage extends StatelessWidget {
   ];
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF80D0C7), Color(0xFF13547A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: ConstantAppBar(title: 'Science'),
+      body: Container(
+        color: Color(0xFFF5F5F5),
+        child: ListView.builder(
+          itemCount: chapters.length,
+          itemBuilder: (context, index) {
+            return _buildChapterCard(context, chapters[index]);
+          },
         ),
       ),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                "Science",
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: chapters.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChapterDetailPage(
-                            title: chapters[index]['title']!,
-                            videoId: chapters[index]['videoId']!,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.play_circle_fill,
-                                size: 40, color: Colors.deepPurpleAccent),
-                            SizedBox(width: 20),
-                            Expanded(  // Added to prevent text overflow
-                              child: Text(
-                                chapters[index]['title']!,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis, // Trims overflowed text
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+    );
+  }
+
+  Widget _buildChapterCard(BuildContext context, Map<String, String> chapter) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading:
+            Icon(Icons.play_circle_filled, color: Color(0xFF2E8BC0), size: 40),
+        title: Text(
+          chapter['title']!,
+          style: GoogleFonts.roboto(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF333333),
+          ),
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChapterDetailPage(
+                title: chapter['title']!,
+                videoId: chapter['videoId']!,
+              ),
+            ),
+          );
+        },
       ),
-    ),
-  );
-}
+    );
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:gyaan_setu/screens/Login/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -25,13 +26,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
-  // Updated color scheme with shades of purple
-  final Color primaryColor = Color(0xFF8E44AD); // Deep purple
-  final Color secondaryColor = Color(0xFF9B59B6); // Medium purple
-  final Color accentColor = Color(0xFFAF7AC5); // Light purple
-  final Color backgroundColor = Color(0xFFF4ECF7); // Very light purple
-  final Color textColor = Color(0xFF4A235A); // Dark purple
-  final Color errorColor = Color(0xFFE74C3C); // Keep red for errors
+  // Color scheme
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+  final Color lightTextColor = Color(0xFF757575);
+  final Color errorColor = Color(0xFFD62828);
 
   @override
   void dispose() {
@@ -65,9 +67,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'role': _selectedRole,
       });
 
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Account created successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      // Delay for a moment to show the success message
+      await Future.delayed(Duration(seconds: 2));
+
+      // Navigate to login screen with a fade transition
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: Duration(milliseconds: 500),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -84,9 +105,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildLogoAndAppName(),
+              SizedBox(height: 40),
+              Text(
+                "Create your account",
+                style: GoogleFonts.roboto(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
               SizedBox(height: 30),
               _buildTextField("Email", Icons.email, _emailController),
               SizedBox(height: 16),
@@ -114,6 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Text(
                     _errorMessage!,
                     style: TextStyle(color: errorColor),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               SizedBox(height: 24),
@@ -129,7 +161,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       String hintText, IconData icon, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -142,24 +175,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          hintStyle: GoogleFonts.roboto(color: lightTextColor),
           filled: true,
           fillColor: Colors.white,
-          prefixIcon: Icon(icon, color: secondaryColor),
+          prefixIcon: Icon(icon, color: primaryColor, size: 24),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: primaryColor, width: 2.0),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
-        style: GoogleFonts.nunito(color: textColor),
+        style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
     );
   }
@@ -169,7 +199,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       {bool isConfirmPassword = false}) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -192,10 +223,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          hintStyle: GoogleFonts.roboto(color: lightTextColor),
           filled: true,
           fillColor: Colors.white,
-          prefixIcon: Icon(icon, color: secondaryColor),
+          prefixIcon: Icon(icon, color: primaryColor, size: 24),
           suffixIcon: IconButton(
             icon: Icon(
               isConfirmPassword
@@ -205,7 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   : (_obscurePassword
                       ? Icons.visibility_off
                       : Icons.visibility),
-              color: textColor.withOpacity(0.6),
+              color: lightTextColor,
             ),
             onPressed: () {
               setState(() {
@@ -218,19 +249,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: primaryColor, width: 2.0),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
-        style: GoogleFonts.nunito(color: textColor),
+        style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
     );
   }
@@ -249,28 +277,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: List.generate(4, (index) {
-            return Expanded(
-              child: Container(
-                height: 4,
-                margin: EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(
-                  color: _getStrengthColor(index),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+        SizedBox(height: 8),
+        Container(
+          height: 6,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            color: Colors.grey.withOpacity(0.3),
+          ),
+          child: FractionallySizedBox(
+            widthFactor: passwordStrength,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                color: _getStrengthColor(3),
               ),
-            );
-          }),
+            ),
+          ),
         ),
         SizedBox(height: 8),
-        Text(
-          _getPasswordStrengthText(),
-          style: GoogleFonts.nunito(
-            color: _getStrengthColor(3),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _getPasswordStrengthText(),
+              style: GoogleFonts.roboto(
+                color: _getStrengthColor(3),
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              'Password strength',
+              style: GoogleFonts.roboto(
+                color: lightTextColor,
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -278,15 +321,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Color _getStrengthColor(int index) {
     if (passwordStrength == 0) return Colors.grey.withOpacity(0.3);
-    if (passwordStrength <= 0.25 && index == 0) return errorColor;
-    if (passwordStrength <= 0.5 && index <= 1) return Colors.orange;
-    if (passwordStrength <= 0.75 && index <= 2) return Colors.yellow;
-    if (passwordStrength <= 1 && index <= 3) return primaryColor;
-    return Colors.grey.withOpacity(0.3);
+    if (passwordStrength <= 0.25) return errorColor;
+    if (passwordStrength <= 0.5) return Colors.orange;
+    if (passwordStrength <= 0.75) return Colors.yellow;
+    return primaryColor;
   }
 
   String _getPasswordStrengthText() {
-    if (passwordStrength == 0) return "Enter a password";
+    if (passwordStrength == 0) return "No password";
     if (passwordStrength <= 0.25) return "Weak";
     if (passwordStrength <= 0.5) return "Fair";
     if (passwordStrength <= 0.75) return "Good";
@@ -294,48 +336,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildRoleSelection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildRoleButton('Teacher'),
-        SizedBox(width: 16),
-        _buildRoleButton('Student'),
+        Text(
+          "I am a:",
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: textColor,
+          ),
+        ),
+        SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildRoleButton('Teacher'),
+            SizedBox(width: 16),
+            _buildRoleButton('Student'),
+          ],
+        ),
       ],
     );
   }
 
   Widget _buildRoleButton(String role) {
     bool isSelected = _selectedRole == role;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedRole = role;
-        });
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        decoration: BoxDecoration(
-          color: isSelected ? primaryColor : Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedRole = role;
+          });
+        },
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          decoration: BoxDecoration(
+            color: isSelected ? primaryColor : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
               color: isSelected ? primaryColor : textColor.withOpacity(0.2),
-              width: 2),
-          boxShadow: [
-            if (isSelected)
-              BoxShadow(
-                color: primaryColor.withOpacity(0.3),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-          ],
-        ),
-        child: Text(
-          role,
-          style: GoogleFonts.nunito(
-            color: isSelected ? Colors.white : textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+              width: 2,
+            ),
+            boxShadow: [
+              if (isSelected)
+                BoxShadow(
+                  color: primaryColor.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+            ],
+          ),
+          child: Text(
+            role,
+            style: GoogleFonts.roboto(
+              color: isSelected ? Colors.white : textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
@@ -344,13 +404,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildSignUpButton() {
     return Container(
-      width: double.infinity,
       height: 56,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.3),
+            color: accentColor.withOpacity(0.3),
             blurRadius: 10,
             offset: Offset(0, 5),
           ),
@@ -359,16 +418,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: ElevatedButton(
         onPressed: _signUp,
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: accentColor,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,
         ),
         child: Text(
           "Create account",
-          style: GoogleFonts.nunito(
+          style: GoogleFonts.roboto(
             fontSize: 18,
-            color: Colors.white,
+            color: textColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -381,11 +440,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: RichText(
         text: TextSpan(
           text: "Already have an account? ",
-          style: GoogleFonts.nunito(color: textColor, fontSize: 16),
+          style: GoogleFonts.roboto(color: textColor, fontSize: 16),
           children: [
             TextSpan(
               text: "Log in",
-              style: GoogleFonts.nunito(
+              style: GoogleFonts.roboto(
                 color: secondaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -405,37 +464,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildLogoAndAppName() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/gyaansetu.logo.png',
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          ),
+        SvgPicture.asset(
+          'assets/app_logo.svg',
+          width: 120,
+          height: 120,
         ),
-        SizedBox(width: 16),
+        SizedBox(height: 16),
         Text(
           "GyaanSetu",
-          style: GoogleFonts.nunito(
-            fontSize: 28,
+          style: GoogleFonts.roboto(
+            fontSize: 32,
             fontWeight: FontWeight.bold,
             color: primaryColor,
           ),

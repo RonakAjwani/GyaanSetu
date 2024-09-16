@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
-void main() {
-  runApp(WordGuessingGame());
-}
+import 'package:google_fonts/google_fonts.dart';
+import '../../../widgets/constant_app_bar.dart';
 
 class WordGuessingGame extends StatelessWidget {
   @override
@@ -11,8 +9,11 @@ class WordGuessingGame extends StatelessWidget {
     return MaterialApp(
       title: 'Word Guessing Game',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.grey[100],
+        primaryColor: Color(0xFF1A5F7A),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: Color(0xFF2E8BC0),
+        ),
+        scaffoldBackgroundColor: Color(0xFFF5F5F5),
         fontFamily: 'Roboto',
       ),
       home: GameScreen(),
@@ -26,6 +27,12 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+
   final Map<String, List<String>> words = {
     'gu': ["ગાય", "મકાન", "પાનખર"],
     'en': ["COW", "HOUSE", "MONSOON"]
@@ -164,15 +171,6 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  void navigateToLeaderboard() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LeaderboardScreen(leaderboard: leaderboard),
-      ),
-    );
-  }
-
   void showDailyWord() {
     final random = Random();
     String dailyWord = words[selectedLanguage]![
@@ -183,40 +181,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Word Guessing Game'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.lightbulb_outline),
-            onPressed: useHint,
-            tooltip: 'Use Hint (5 Gems)',
-          ),
-          IconButton(
-            icon: Icon(Icons.leaderboard),
-            onPressed: navigateToLeaderboard,
-            tooltip: 'Leaderboard',
-          ),
-          IconButton(
-            icon: Icon(Icons.event),
-            onPressed: showDailyWord,
-            tooltip: 'Daily Word',
-          ),
-          DropdownButton<String>(
-            value: selectedLanguage,
-            items: [
-              DropdownMenuItem(value: 'gu', child: Text('Gujarati')),
-              DropdownMenuItem(value: 'en', child: Text('English')),
-            ],
-            onChanged: (value) {
-              setState(() {
-                selectedLanguage = value!;
-                resetGame();
-              });
-            },
-          ),
-          SizedBox(width: 16),
-        ],
-      ),
+      appBar: ConstantAppBar(title: 'Word Guessing Game'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -226,31 +191,35 @@ class _GameScreenState extends State<GameScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Level: ${currentLevel + 1}',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: GoogleFonts.roboto(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor)),
                 Text('Gems: $gems',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: GoogleFonts.roboto(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor)),
               ],
             ),
             SizedBox(height: 20),
             Container(
               height: 150,
               decoration: BoxDecoration(
-                color: Colors.purple[100],
+                color: secondaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.purple.withOpacity(0.2),
-                      spreadRadius: 5,
-                      blurRadius: 7)
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 3)
                 ],
               ),
               child: Center(
                 child: Text(
                   'Sign Language Description Here',
-                  style: TextStyle(
-                      color: Colors.purple[800],
+                  style: GoogleFonts.roboto(
+                      color: primaryColor,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
@@ -272,12 +241,12 @@ class _GameScreenState extends State<GameScreen> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color:
-                          letter.isNotEmpty ? Colors.purple : Colors.grey[300],
+                          letter.isNotEmpty ? primaryColor : Colors.grey[300],
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
                       letter,
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
@@ -301,14 +270,14 @@ class _GameScreenState extends State<GameScreen> {
                     height: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: letter.isNotEmpty
-                          ? Colors.deepPurple
-                          : Colors.grey[300],
+                      color:
+                          letter.isNotEmpty ? secondaryColor : Colors.grey[300],
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
                       letter,
-                      style: TextStyle(fontSize: 30, color: Colors.white),
+                      style:
+                          GoogleFonts.roboto(fontSize: 30, color: Colors.white),
                     ),
                   ),
                 );
@@ -317,45 +286,51 @@ class _GameScreenState extends State<GameScreen> {
             SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: onSubmit,
-              icon: Icon(Icons.check),
-              label: Text('Submit'),
+              icon: Icon(Icons.check, color: Colors.white),
+              label: Text('Submit', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
                 padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                textStyle: TextStyle(fontSize: 20),
+                textStyle: GoogleFonts.roboto(fontSize: 20),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0)),
               ),
             ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: useHint,
+                  icon: Icon(Icons.lightbulb, color: primaryColor),
+                  label:
+                      Text('Use Hint', style: TextStyle(color: primaryColor)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: accentColor,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textStyle: GoogleFonts.roboto(fontSize: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: showDailyWord,
+                  icon: Icon(Icons.calendar_today, color: primaryColor),
+                  label:
+                      Text('Daily Word', style: TextStyle(color: primaryColor)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: accentColor,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textStyle: GoogleFonts.roboto(fontSize: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                  ),
+                ),
+              ],
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class LeaderboardScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> leaderboard;
-
-  LeaderboardScreen({required this.leaderboard});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Leaderboard'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: leaderboard.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text('Level ${leaderboard[index]['level']}'),
-                trailing: Text('Score: ${leaderboard[index]['score']}'),
-              ),
-            );
-          },
         ),
       ),
     );

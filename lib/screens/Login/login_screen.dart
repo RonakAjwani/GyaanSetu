@@ -5,6 +5,7 @@ import '../SignUp/signup_screen.dart';
 import 'forgot_password_screen.dart';
 import '../Home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,12 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   // Updated color scheme
-  final Color primaryColor = Color(0xFF8E44AD); // Deep purple
-  final Color secondaryColor = Color(0xFF9B59B6); // Medium purple
-  final Color accentColor = Color(0xFFAF7AC5); // Light purple
-  final Color backgroundColor = Color(0xFFF4ECF7); // Very light purple
-  final Color textColor = Color(0xFF4A235A); // Dark purple
-  final Color errorColor = Color(0xFFE74C3C); // Keep red for errors
+  final Color primaryColor = Color(0xFF1A5F7A);
+  final Color secondaryColor = Color(0xFF2E8BC0);
+  final Color accentColor = Color(0xFFFFB703);
+  final Color backgroundColor = Color(0xFFF5F5F5);
+  final Color textColor = Color(0xFF333333);
+  final Color lightTextColor = Color(0xFF757575);
+  final Color errorColor = Color(0xFFD62828);
 
   @override
   void dispose() {
@@ -59,27 +61,29 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildLogoAndAppName(),
               SizedBox(height: 40),
               Text(
                 "Welcome back!",
-                style: GoogleFonts.nunito(
-                  fontSize: 32,
+                style: GoogleFonts.roboto(
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 8),
               Text(
                 "Log in to continue your learning journey",
-                style: GoogleFonts.nunito(
+                style: GoogleFonts.roboto(
                   fontSize: 16,
                   color: textColor,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
               _buildTextField("Email", Icons.email, _emailController),
@@ -96,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     _errorMessage!,
                     style: TextStyle(color: errorColor),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               SizedBox(height: 24),
@@ -111,7 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
       String hintText, IconData icon, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -124,24 +130,21 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          hintStyle: GoogleFonts.roboto(color: lightTextColor),
           filled: true,
           fillColor: Colors.white,
-          prefixIcon: Icon(icon, color: secondaryColor),
+          prefixIcon: Icon(icon, color: primaryColor, size: 24),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: primaryColor, width: 2.0),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
-        style: GoogleFonts.nunito(color: textColor),
+        style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
     );
   }
@@ -150,7 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
       String hintText, IconData icon, TextEditingController controller) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -164,14 +168,14 @@ class _LoginScreenState extends State<LoginScreen> {
         obscureText: _obscurePassword,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.nunito(color: textColor.withOpacity(0.6)),
+          hintStyle: GoogleFonts.roboto(color: lightTextColor),
           filled: true,
           fillColor: Colors.white,
-          prefixIcon: Icon(icon, color: secondaryColor),
+          prefixIcon: Icon(icon, color: primaryColor, size: 24),
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: textColor.withOpacity(0.6),
+              color: lightTextColor,
             ),
             onPressed: () {
               setState(() {
@@ -180,32 +184,28 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: Colors.transparent),
-          ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
-            borderSide: BorderSide(color: primaryColor, width: 2.0),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
-        style: GoogleFonts.nunito(color: textColor),
+        style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
     );
   }
 
   Widget _buildLoginButton() {
     return Container(
-      width: double.infinity,
       height: 56,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.3),
+            color: accentColor.withOpacity(0.3),
             blurRadius: 10,
             offset: Offset(0, 5),
           ),
@@ -214,16 +214,16 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
         onPressed: _login,
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: accentColor,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,
         ),
         child: Text(
           "Log In",
-          style: GoogleFonts.nunito(
+          style: GoogleFonts.roboto(
             fontSize: 18,
-            color: Colors.white,
+            color: textColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Text(
           "Forgot Password?",
-          style: GoogleFonts.nunito(
+          style: GoogleFonts.roboto(
             color: secondaryColor,
             fontWeight: FontWeight.bold,
             fontSize: 14,
@@ -258,11 +258,11 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RichText(
         text: TextSpan(
           text: "Don't have an account? ",
-          style: GoogleFonts.nunito(color: textColor, fontSize: 16),
+          style: GoogleFonts.roboto(color: textColor, fontSize: 16),
           children: [
             TextSpan(
               text: "Sign Up",
-              style: GoogleFonts.nunito(
+              style: GoogleFonts.roboto(
                 color: secondaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -282,37 +282,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLogoAndAppName() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/gyaansetu.logo.png',
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-            ),
-          ),
+        SvgPicture.asset(
+          'assets/app_logo.svg',
+          width: 120,
+          height: 120,
         ),
-        SizedBox(width: 16),
+        SizedBox(height: 16),
         Text(
           "GyaanSetu",
-          style: GoogleFonts.nunito(
-            fontSize: 28,
+          style: GoogleFonts.roboto(
+            fontSize: 32,
             fontWeight: FontWeight.bold,
             color: primaryColor,
           ),

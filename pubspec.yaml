@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
+  video_player: ^2.9.1
 
   # Font package
   google_fonts: ^6.2.1
@@ -85,7 +87,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/google_logo.png
     - assets/sign_language/ka.png
     - assets/sign_language/ca.png
     - assets/sign_language/cha.png
@@ -109,7 +110,7 @@ flutter:
     - assets/numbers/7.png
     - assets/numbers/8.png
     - assets/numbers/9.png
-    - assets/gyaansetu.logo.png
+    - assets/app_logo.svg
 
 
   # The following line ensures that the Material Icons font is

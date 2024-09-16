@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'module_video_logic.dart'; // Ensure this import is correct
+import '../module_video_logic.dart';
+import '../../../widgets/constant_app_bar.dart';
 
 class MathematicsPage extends StatelessWidget {
   final List<Map<String, String>> chapters = [
@@ -32,7 +33,6 @@ class MathematicsPage extends StatelessWidget {
       'title': 'Chapter 8: Exercise on Addition',
       'videoId': 'WR6LXNOYwUU',
     },
-    
     {
       'title': 'Chapter 9: Introduction to Subtraction',
       'videoId': 'IAhrwiLCiFI',
@@ -41,88 +41,52 @@ class MathematicsPage extends StatelessWidget {
       'title': 'Chapter 10: Exercise on Subtraction',
       'videoId': 'K49siiPUjU4',
     },
-    
-    // Add more chapters here...
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: ConstantAppBar(title: 'Mathematics'),
       body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFB2A4FF), Color(0xFFE7CFFF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+        color: Color(0xFFF5F5F5),
+        child: ListView.builder(
+          itemCount: chapters.length,
+          itemBuilder: (context, index) {
+            return _buildChapterCard(context, chapters[index]);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChapterCard(BuildContext context, Map<String, String> chapter) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading:
+            Icon(Icons.play_circle_filled, color: Color(0xFF2E8BC0), size: 40),
+        title: Text(
+          chapter['title']!,
+          style: GoogleFonts.roboto(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF333333),
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  "Mathematics",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChapterDetailPage(
+                title: chapter['title']!,
+                videoId: chapter['videoId']!,
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: chapters.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChapterDetailPage(
-                              title: chapters[index]['title']!,
-                              videoId: chapters[index]['videoId']!,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.play_circle_fill,
-                                  size: 40, color: Colors.purpleAccent),
-                              SizedBox(width: 20),
-                              Expanded(
-                                child: Text(
-                                  chapters[index]['title']!,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

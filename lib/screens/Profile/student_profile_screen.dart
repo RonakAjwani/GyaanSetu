@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// Update this import path to where your login page is actually located
 import '../Login/login_screen.dart';
 import '../Courses/courses_page.dart';
 import '../Whiteboard/whiteboard_page.dart';
 import '../Home/home_page.dart';
-import '../Gamification/word_guess.dart';
+import '../Gamification/games_hub.dart';
+import '../../widgets/constant_bottom_nav_bar.dart';
+import '../../widgets/constant_app_bar.dart';
+import 'my_account_page.dart';
 
 class StudentProfileScreen extends StatefulWidget {
   const StudentProfileScreen({Key? key}) : super(key: key);
@@ -24,10 +26,11 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   String _email = '';
 
   // Color scheme
-  final Color primaryColor = const Color(0xFF8E44AD);
-  final Color accentColor = const Color(0xFFAF7AC5);
-  final Color backgroundColor = const Color(0xFFF4ECF7);
-  final Color textColor = const Color(0xFF4A235A);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
 
   @override
   void initState() {
@@ -51,9 +54,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     await _auth.signOut();
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-          builder: (context) =>
-              LoginScreen()), // Make sure LoginScreen is the correct class name
+      MaterialPageRoute(builder: (context) => LoginScreen()),
       (Route<dynamic> route) => false,
     );
   }
@@ -62,19 +63,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          'Profile',
-          style: GoogleFonts.nunito(
-            color: primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: ConstantAppBar(title: 'Profile'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -84,7 +73,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               CircleAvatar(
                 radius: 60,
                 backgroundImage: const AssetImage('assets/default_avatar.png'),
-                backgroundColor: accentColor,
+                backgroundColor: secondaryColor,
               ),
               const SizedBox(height: 16),
               Text(
@@ -105,7 +94,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                 icon: Icons.person,
                 title: "My Account",
                 onTap: () {
-                  // Navigate to My Account page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyAccountPage()),
+                  );
                 },
               ),
               _buildProfileOption(
@@ -159,7 +151,32 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: ConstantBottomNavBar(
+        currentIndex: 4, // Profile is selected
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Courses()));
+              break;
+            case 1:
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => WhiteboardPage()));
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => GamesHub()));
+              break;
+            case 4:
+              // Already on Profile page
+              break;
+          }
+        },
+      ),
     );
   }
 
@@ -174,58 +191,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         title,
         style: GoogleFonts.nunito(fontSize: 18, color: textColor),
       ),
-      trailing: Icon(Icons.chevron_right, color: accentColor),
+      trailing: Icon(Icons.chevron_right, color: secondaryColor),
       onTap: onTap,
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Courses'),
-        BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Whiteboard'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.games), label: 'Game'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-      currentIndex: 4, // Profile is selected
-      selectedItemColor: primaryColor,
-      unselectedItemColor: textColor.withOpacity(0.5),
-      showUnselectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Courses())); // Removed const
-            break;
-          case 1:
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WhiteboardPage())); // Removed const
-            break;
-          case 2:
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage())); // Removed const
-            break;
-          case 3:
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WordGuessingGame())); // Removed const
-            break;
-          case 4:
-            // Already on Profile page
-            break;
-        }
-      },
     );
   }
 }
