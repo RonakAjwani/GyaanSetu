@@ -63,8 +63,8 @@ There are various other pages too for which the screenshots have been added in t
 Follow these steps to set up and run the project locally:
 
 1. **Clone the Repository**:  
-   git clone https://github.com/RonakAjwani/GyaanSetu.git
-   cd GyaanSetu
+    git clone https://github.com/RonakAjwani/GyaanSetu.git
+    cd GyaanSetu
 
 2. **Install Flutter**:  
    Ensure you have Flutter installed. Follow the [Flutter installation guide](https://flutter.dev/docs/get-started/install).
