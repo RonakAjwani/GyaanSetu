@@ -37,24 +37,23 @@ This project was developed as part of the **Smart India Hackathon 2024**, where 
 
 ## Screenshots 
 ### Signup Screen  
-![Signup Screen](assets/readme/signup page.jpg)
+![Signup Screen](assets/readme/signuppage.jpg)
 
 ### Login Screen  
-![Login Screen](assets/readme/login page.jpg)  
+![Login Screen](assets/readme/loginpage.jpg)  
 
 ### Home Screen  
-![Home Screen](assets/readme/main home page.jpg) 
+![Home Screen](assets/readme/homepage.jpg) 
 
 ### Courses Page  
 ![Course Page](assets/readme/courses.jpg)  
-
 
 ### Whiteboard Page  
 ![Whiteboard for Practice](assets/readme/whiteboard.jpg) 
 
 
 ### Games Main Page  
-![Learning based on Gamification](assets/readme/games main screen.jpg) 
+![Learning based on Gamification](assets/readme/gamesmainscreen.jpg) 
 
 There are various other pages too for which the screenshots have been added in the assets/readme folder.
 
