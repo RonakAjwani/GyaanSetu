@@ -7,13 +7,14 @@ class SignLanguagePage extends StatelessWidget {
   final String alphabet;
   final String transliteration;
 
-  SignLanguagePage({required this.alphabet, required this.transliteration});
+  SignLanguagePage(
+      {super.key, required this.alphabet, required this.transliteration});
 
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,8 @@ class SignLanguagePage extends StatelessWidget {
           ),
         ),
         backgroundColor: primaryColor,
-        iconTheme:
-            IconThemeData(color: Colors.white), // Changed icon color to white
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Changed icon color to white
         elevation: 0, // Added elevation for better separation from the body
       ),
       body: Container(
@@ -61,7 +62,7 @@ class SignLanguagePage extends StatelessWidget {
                                   color: secondaryColor,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 '[$transliteration]',
                                 style: GoogleFonts.roboto(
@@ -75,7 +76,7 @@ class SignLanguagePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Card(
                         elevation: 5,
@@ -88,7 +89,7 @@ class SignLanguagePage extends StatelessWidget {
                             'assets/sign_language/$transliteration.png',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Center(
+                              return const Center(
                                 child: Icon(
                                   Icons.image_not_supported,
                                   size: 50,
@@ -118,7 +119,7 @@ class SignLanguagePage extends StatelessWidget {
 class WhiteboardWidget extends StatefulWidget {
   final String transliteration;
 
-  WhiteboardWidget({required this.transliteration});
+  const WhiteboardWidget({super.key, required this.transliteration});
 
   @override
   _WhiteboardWidgetState createState() => _WhiteboardWidgetState();
@@ -137,7 +138,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
@@ -150,7 +151,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
               style: GoogleFonts.roboto(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1A5F7A),
+                color: const Color(0xFF1A5F7A),
               ),
             ),
           ),
@@ -162,7 +163,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
                     'assets/dotted_alphabets/${widget.transliteration}_dotted.png',
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
-                      return Center(
+                      return const Center(
                         child: Icon(
                           Icons.image_not_supported,
                           size: 50,
@@ -200,7 +201,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
                   },
                   child: CustomPaint(
                     painter: _DrawingPainter(drawingPoints),
-                    child: Container(
+                    child: SizedBox(
                       height: double.infinity,
                       width: double.infinity,
                     ),
@@ -210,25 +211,25 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(Icons.undo, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.undo, color: Color(0xFF1A5F7A)),
                   onPressed: undo,
                 ),
                 IconButton(
-                  icon: Icon(Icons.redo, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.redo, color: Color(0xFF1A5F7A)),
                   onPressed: redo,
                 ),
                 IconButton(
-                  icon: Icon(Icons.color_lens, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.color_lens, color: Color(0xFF1A5F7A)),
                   onPressed: () => _showColorPicker(context),
                 ),
                 _buildStrokeWidthSelector(),
                 IconButton(
-                  icon: Icon(Icons.delete, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.delete, color: Color(0xFF1A5F7A)),
                   onPressed: clear,
                 ),
               ],
@@ -241,7 +242,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
 
   Widget _buildStrokeWidthSelector() {
     return PopupMenuButton<double>(
-      icon: Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
+      icon: const Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
       itemBuilder: (BuildContext context) {
         return strokeWidths.map((width) {
           return PopupMenuItem<double>(
@@ -251,13 +252,15 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF1A5F7A)),
+                border: Border.all(color: const Color(0xFF1A5F7A)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Container(
                 width: 80,
                 height: width,
-                color: strokeWidth == width ? Color(0xFF1A5F7A) : Colors.grey,
+                color: strokeWidth == width
+                    ? const Color(0xFF1A5F7A)
+                    : Colors.grey,
               ),
             ),
           );
@@ -308,7 +311,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Color'),
+          title: const Text('Select Color'),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: selectedColor,
@@ -322,7 +325,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

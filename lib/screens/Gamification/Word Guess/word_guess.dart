@@ -4,16 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../widgets/constant_app_bar.dart';
 
 class WordGuessingGame extends StatelessWidget {
+  const WordGuessingGame({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Word Guessing Game',
       theme: ThemeData(
-        primaryColor: Color(0xFF1A5F7A),
+        primaryColor: const Color(0xFF1A5F7A),
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          secondary: Color(0xFF2E8BC0),
+          secondary: const Color(0xFF2E8BC0),
         ),
-        scaffoldBackgroundColor: Color(0xFFF5F5F5),
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         fontFamily: 'Roboto',
       ),
       home: GameScreen(),
@@ -22,16 +24,18 @@ class WordGuessingGame extends StatelessWidget {
 }
 
 class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
+
   @override
   _GameScreenState createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
 
   final Map<String, List<String>> words = {
     'gu': ["ગાય", "મકાન", "પાનખર"],
@@ -127,8 +131,8 @@ class _GameScreenState extends State<GameScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Congratulations!'),
-          content: Text('You completed all levels.'),
+          title: const Text('Congratulations!'),
+          content: const Text('You completed all levels.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -140,7 +144,7 @@ class _GameScreenState extends State<GameScreen> {
                   resetGame();
                 });
               },
-              child: Text('Restart'),
+              child: const Text('Restart'),
             ),
           ],
         );
@@ -181,7 +185,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: 'Word Guessing Game'),
+      appBar: const ConstantAppBar(title: 'Word Guessing Game'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -202,7 +206,7 @@ class _GameScreenState extends State<GameScreen> {
                         color: textColor)),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: 150,
               decoration: BoxDecoration(
@@ -225,7 +229,7 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
@@ -235,7 +239,7 @@ class _GameScreenState extends State<GameScreen> {
                 return GestureDetector(
                   onTap: () => onRemoveSelectedLetter(index),
                   child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     width: 50,
                     height: 50,
                     alignment: Alignment.center,
@@ -255,7 +259,7 @@ class _GameScreenState extends State<GameScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
@@ -265,7 +269,7 @@ class _GameScreenState extends State<GameScreen> {
                 return GestureDetector(
                   onTap: () => onLetterSelected(index),
                   child: AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     width: 50,
                     height: 50,
                     alignment: Alignment.center,
@@ -283,20 +287,22 @@ class _GameScreenState extends State<GameScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: onSubmit,
-              icon: Icon(Icons.check, color: Colors.white),
-              label: Text('Submit', style: TextStyle(color: Colors.white)),
+              icon: const Icon(Icons.check, color: Colors.white),
+              label:
+                  const Text('Submit', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 12.0),
                 textStyle: GoogleFonts.roboto(fontSize: 20),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0)),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -307,8 +313,8 @@ class _GameScreenState extends State<GameScreen> {
                       Text('Use Hint', style: TextStyle(color: primaryColor)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: accentColor,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
                     textStyle: GoogleFonts.roboto(fontSize: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),
@@ -321,8 +327,8 @@ class _GameScreenState extends State<GameScreen> {
                       Text('Daily Word', style: TextStyle(color: primaryColor)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: accentColor,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
                     textStyle: GoogleFonts.roboto(fontSize: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),

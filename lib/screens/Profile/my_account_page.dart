@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../widgets/constant_app_bar.dart';
 
 class MyAccountPage extends StatefulWidget {
+  const MyAccountPage({super.key});
+
   @override
   _MyAccountPageState createState() => _MyAccountPageState();
 }
@@ -65,7 +67,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
         isEditing = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Changes saved successfully')),
+        const SnackBar(content: Text('Changes saved successfully')),
       );
     }
   }
@@ -73,7 +75,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: 'My Account'),
+      appBar: const ConstantAppBar(title: 'My Account'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -82,7 +84,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             Stack(
               alignment: Alignment.center,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 60,
                   backgroundImage: AssetImage('assets/default_avatar.png'),
                 ),
@@ -93,7 +95,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     radius: 20,
                     backgroundColor: primaryColor,
                     child: IconButton(
-                      icon: Icon(Icons.edit, color: Colors.white, size: 20),
+                      icon:
+                          const Icon(Icons.edit, color: Colors.white, size: 20),
                       onPressed: () {
                         // TODO: Implement image change functionality
                       },
@@ -102,7 +105,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               nameController.text,
               style: GoogleFonts.nunito(
@@ -114,7 +117,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
               'Student',
               style: GoogleFonts.nunito(color: textColor, fontSize: 16),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             buildEditableField("Name", nameController, Icons.person),
             buildEditableField(
                 "Username", usernameController, Icons.alternate_email),
@@ -123,7 +126,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             buildEditableField("Date of Birth", dobController, Icons.cake),
             buildEditableField(
                 "Educational Institute", instituteController, Icons.school),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: isEditing
                   ? _saveChanges
@@ -137,12 +140,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextButton.icon(
               onPressed: () {
                 // Delete account confirmation
@@ -150,16 +154,16 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Delete Account"),
-                      content: Text(
+                      title: const Text("Delete Account"),
+                      content: const Text(
                           "Are you sure you want to delete your account? This action cannot be undone."),
                       actions: [
                         TextButton(
-                          child: Text("Cancel"),
+                          child: const Text("Cancel"),
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                         TextButton(
-                          child: Text("Delete",
+                          child: const Text("Delete",
                               style: TextStyle(color: Colors.red)),
                           onPressed: () {
                             // TODO: Implement account deletion
@@ -171,9 +175,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   },
                 );
               },
-              icon: Icon(Icons.delete_forever, color: Colors.red),
-              label:
-                  Text('Delete Account', style: TextStyle(color: Colors.red)),
+              icon: const Icon(Icons.delete_forever, color: Colors.red),
+              label: const Text('Delete Account',
+                  style: TextStyle(color: Colors.red)),
             ),
           ],
         ),

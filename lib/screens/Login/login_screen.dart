@@ -8,6 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -20,13 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   // Updated color scheme
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
-  final Color lightTextColor = Color(0xFF757575);
-  final Color errorColor = Color(0xFFD62828);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+  final Color lightTextColor = const Color(0xFF757575);
+  final Color errorColor = const Color(0xFFD62828);
 
   @override
   void dispose() {
@@ -46,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -61,12 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildLogoAndAppName(),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Text(
                 "Welcome back!",
                 style: GoogleFonts.roboto(
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 "Log in to continue your learning journey",
                 style: GoogleFonts.roboto(
@@ -85,25 +87,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               _buildTextField("Email", Icons.email, _emailController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPasswordTextField(
                   "Password", Icons.lock, _passwordController),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildForgotPasswordText(context),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               _buildLoginButton(),
               if (_errorMessage != null)
                 Padding(
-                  padding: EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Text(
                     _errorMessage!,
                     style: TextStyle(color: errorColor),
                     textAlign: TextAlign.center,
                   ),
                 ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildSignUpText(context),
             ],
           ),
@@ -122,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -142,7 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
@@ -159,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -191,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
@@ -207,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
           BoxShadow(
             color: accentColor.withOpacity(0.3),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -289,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
           width: 120,
           height: 120,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
           "GyaanSetu",
           style: GoogleFonts.roboto(

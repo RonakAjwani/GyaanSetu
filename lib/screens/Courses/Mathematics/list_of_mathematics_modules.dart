@@ -43,12 +43,14 @@ class MathematicsPage extends StatelessWidget {
     },
   ];
 
+  const MathematicsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: 'Mathematics'),
+      appBar: const ConstantAppBar(title: 'Mathematics'),
       body: Container(
-        color: Color(0xFFF5F5F5),
+        color: const Color(0xFFF5F5F5),
         child: ListView.builder(
           itemCount: chapters.length,
           itemBuilder: (context, index) {
@@ -61,19 +63,19 @@ class MathematicsPage extends StatelessWidget {
 
   Widget _buildChapterCard(BuildContext context, Map<String, String> chapter) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading:
-            Icon(Icons.play_circle_filled, color: Color(0xFF2E8BC0), size: 40),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: const Icon(Icons.play_circle_filled,
+            color: Color(0xFF2E8BC0), size: 40),
         title: Text(
           chapter['title']!,
           style: GoogleFonts.roboto(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF333333),
+            color: const Color(0xFF333333),
           ),
         ),
         onTap: () {

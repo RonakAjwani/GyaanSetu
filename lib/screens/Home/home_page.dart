@@ -13,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../widgets/constant_bottom_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -30,13 +30,13 @@ class _HomePageState extends State<HomePage>
   String _userName = 'User';
 
   // Color scheme
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
-  final Color lightTextColor = Color(0xFF757575);
-  final Color errorColor = Color(0xFFD62828);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+  final Color lightTextColor = const Color(0xFF757575);
+  final Color errorColor = const Color(0xFFD62828);
 
   @override
   void initState() {
@@ -88,8 +88,10 @@ class _HomePageState extends State<HomePage>
             context, MaterialPageRoute(builder: (context) => GamesHub()));
         break;
       case 4:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => StudentProfileScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const StudentProfileScreen()));
         break;
     }
   }
@@ -124,11 +126,11 @@ class _HomePageState extends State<HomePage>
                 ),
                 children: [
                   _buildHeader(),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   _buildWelcomeCard(),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   _buildQuickTranslator(),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   _buildFeatureCards(),
                 ],
               ),
@@ -154,7 +156,7 @@ class _HomePageState extends State<HomePage>
               width: 40,
               height: 40,
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Text(
               'GyaanSetu',
               style: GoogleFonts.roboto(
@@ -169,7 +171,7 @@ class _HomePageState extends State<HomePage>
           icon: Icon(Icons.notifications, color: primaryColor),
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Notifications coming soon!')),
+              const SnackBar(content: Text('Notifications coming soon!')),
             );
           },
         ),
@@ -205,14 +207,14 @@ class _HomePageState extends State<HomePage>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: AssetImage('assets/images/user_profile.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +239,7 @@ class _HomePageState extends State<HomePage>
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Text(
                 'Your Progress',
                 style: GoogleFonts.roboto(
@@ -246,7 +248,7 @@ class _HomePageState extends State<HomePage>
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               LinearPercentIndicator(
                 animation: true,
                 lineHeight: 20.0,
@@ -264,21 +266,22 @@ class _HomePageState extends State<HomePage>
                 progressColor: accentColor,
                 backgroundColor: Colors.white.withOpacity(0.3),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Courses()));
                 },
-                child: Text('Continue Learning'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: primaryColor,
                   backgroundColor: accentColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
+                child: Text('Continue Learning'),
               ),
             ],
           ),
@@ -292,7 +295,7 @@ class _HomePageState extends State<HomePage>
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +312,7 @@ class _HomePageState extends State<HomePage>
                   Row(
                     children: [
                       Icon(Icons.translate, color: primaryColor),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       Text(
                         'Quick Translator',
                         style: GoogleFonts.roboto(
@@ -330,7 +333,7 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             if (_isTranslatorExpanded) ...[
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 decoration: InputDecoration(
                   hintText: _isEnglishToGujarati
@@ -347,10 +350,10 @@ class _HomePageState extends State<HomePage>
                 ),
                 onChanged: _translateText,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                padding: EdgeInsets.all(16),
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: secondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
@@ -367,7 +370,7 @@ class _HomePageState extends State<HomePage>
                   style: GoogleFonts.roboto(color: textColor, fontSize: 16),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
@@ -375,18 +378,19 @@ class _HomePageState extends State<HomePage>
                       _isEnglishToGujarati = !_isEnglishToGujarati;
                     });
                   },
-                  icon: Icon(Icons.swap_horiz, color: Colors.white),
+                  icon: const Icon(Icons.swap_horiz, color: Colors.white),
                   label: Text(
                     _isEnglishToGujarati
                         ? 'Switch to Gujarati'
                         : 'Switch to English',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
                   ),
                 ),
               ),
@@ -409,13 +413,13 @@ class _HomePageState extends State<HomePage>
             color: primaryColor,
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         GridView.count(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             _buildFeatureCard('Courses', Icons.book, () {
               Navigator.push(
@@ -433,7 +437,7 @@ class _HomePageState extends State<HomePage>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => StudentProfileScreen()));
+                      builder: (context) => const StudentProfileScreen()));
             }),
           ],
         ),
@@ -448,7 +452,7 @@ class _HomePageState extends State<HomePage>
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
@@ -464,7 +468,7 @@ class _HomePageState extends State<HomePage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 48, color: primaryColor),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
                 title,
                 style: GoogleFonts.roboto(

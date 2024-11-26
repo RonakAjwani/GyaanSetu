@@ -11,6 +11,8 @@ import '../Gamification/games_hub.dart';
 import '../Profile/student_profile_screen.dart';
 
 class WhiteboardPage extends StatefulWidget {
+  const WhiteboardPage({super.key});
+
   @override
   _WhiteboardPageState createState() => _WhiteboardPageState();
 }
@@ -33,13 +35,13 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
           page = Courses();
           break;
         case 2:
-          page = HomePage();
+          page = const HomePage();
           break;
         case 3:
           page = GamesHub();
           break;
         case 4:
-          page = StudentProfileScreen();
+          page = const StudentProfileScreen();
           break;
         default:
           return;
@@ -54,7 +56,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: "Whiteboard"),
+      appBar: const ConstantAppBar(title: "Whiteboard"),
       body: Stack(
         children: [
           Container(
@@ -87,7 +89,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
               },
               child: CustomPaint(
                 painter: _DrawingPainter(drawingPoints),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                 ),
@@ -109,20 +111,21 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.undo, color: Color(0xFF1A5F7A)),
+                      icon: const Icon(Icons.undo, color: Color(0xFF1A5F7A)),
                       onPressed: undo,
                     ),
                     IconButton(
-                      icon: Icon(Icons.redo, color: Color(0xFF1A5F7A)),
+                      icon: const Icon(Icons.redo, color: Color(0xFF1A5F7A)),
                       onPressed: redo,
                     ),
                     IconButton(
-                      icon: Icon(Icons.color_lens, color: Color(0xFF1A5F7A)),
+                      icon: const Icon(Icons.color_lens,
+                          color: Color(0xFF1A5F7A)),
                       onPressed: () => _showColorPicker(context),
                     ),
                     _buildStrokeWidthSelector(),
                     IconButton(
-                      icon: Icon(Icons.delete, color: Color(0xFF1A5F7A)),
+                      icon: const Icon(Icons.delete, color: Color(0xFF1A5F7A)),
                       onPressed: clear,
                     ),
                   ],
@@ -141,7 +144,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
 
   Widget _buildStrokeWidthSelector() {
     return PopupMenuButton<double>(
-      icon: Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
+      icon: const Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
       itemBuilder: (BuildContext context) {
         return strokeWidths.map((width) {
           return PopupMenuItem<double>(
@@ -151,13 +154,15 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF1A5F7A)),
+                border: Border.all(color: const Color(0xFF1A5F7A)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Container(
                 width: 80,
                 height: width,
-                color: strokeWidth == width ? Color(0xFF1A5F7A) : Colors.grey,
+                color: strokeWidth == width
+                    ? const Color(0xFF1A5F7A)
+                    : Colors.grey,
               ),
             ),
           );
@@ -208,7 +213,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Color'),
+          title: const Text('Select Color'),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: selectedColor,
@@ -222,7 +227,7 @@ class _WhiteboardPageState extends State<WhiteboardPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

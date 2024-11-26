@@ -8,14 +8,14 @@ class NumberDetailPage extends StatelessWidget {
   final String number;
   final String text;
 
-  NumberDetailPage({required this.number, required this.text});
+  const NumberDetailPage({super.key, required this.number, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ConstantAppBar(title: 'Number - $text'),
       body: Container(
-        color: Color(0xFFF5F5F5),
+        color: const Color(0xFFF5F5F5),
         child: Column(
           children: [
             Expanded(
@@ -40,16 +40,16 @@ class NumberDetailPage extends StatelessWidget {
                                 style: GoogleFonts.roboto(
                                   fontSize: 80,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF2E8BC0),
+                                  color: const Color(0xFF2E8BC0),
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 '[$text]',
                                 style: GoogleFonts.roboto(
                                   fontSize: 24,
                                   fontWeight: FontWeight.normal,
-                                  color: Color(0xFF333333),
+                                  color: const Color(0xFF333333),
                                 ),
                               ),
                             ],
@@ -57,7 +57,7 @@ class NumberDetailPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Card(
                         elevation: 5,
@@ -74,12 +74,12 @@ class NumberDetailPage extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.error_outline,
                                       color: Colors.red,
                                       size: 50,
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Text(
                                       'Image Not Found',
                                       style: GoogleFonts.roboto(
@@ -113,7 +113,7 @@ class NumberDetailPage extends StatelessWidget {
 class WhiteboardWidget extends StatefulWidget {
   final String number;
 
-  WhiteboardWidget({required this.number});
+  const WhiteboardWidget({super.key, required this.number});
 
   @override
   _WhiteboardWidgetState createState() => _WhiteboardWidgetState();
@@ -132,7 +132,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
@@ -145,7 +145,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
               style: GoogleFonts.roboto(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1A5F7A),
+                color: const Color(0xFF1A5F7A),
               ),
             ),
           ),
@@ -157,7 +157,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
                     'assets/dotted_numbers/${widget.number}_dotted.png',
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) {
-                      return Center(
+                      return const Center(
                         child: Icon(
                           Icons.image_not_supported,
                           size: 50,
@@ -195,7 +195,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
                   },
                   child: CustomPaint(
                     painter: _DrawingPainter(drawingPoints),
-                    child: Container(
+                    child: SizedBox(
                       height: double.infinity,
                       width: double.infinity,
                     ),
@@ -205,25 +205,25 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(Icons.undo, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.undo, color: Color(0xFF1A5F7A)),
                   onPressed: undo,
                 ),
                 IconButton(
-                  icon: Icon(Icons.redo, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.redo, color: Color(0xFF1A5F7A)),
                   onPressed: redo,
                 ),
                 IconButton(
-                  icon: Icon(Icons.color_lens, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.color_lens, color: Color(0xFF1A5F7A)),
                   onPressed: () => _showColorPicker(context),
                 ),
                 _buildStrokeWidthSelector(),
                 IconButton(
-                  icon: Icon(Icons.delete, color: Color(0xFF1A5F7A)),
+                  icon: const Icon(Icons.delete, color: Color(0xFF1A5F7A)),
                   onPressed: clear,
                 ),
               ],
@@ -236,7 +236,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
 
   Widget _buildStrokeWidthSelector() {
     return PopupMenuButton<double>(
-      icon: Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
+      icon: const Icon(Icons.line_weight, color: Color(0xFF1A5F7A)),
       itemBuilder: (BuildContext context) {
         return strokeWidths.map((width) {
           return PopupMenuItem<double>(
@@ -246,13 +246,15 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFF1A5F7A)),
+                border: Border.all(color: const Color(0xFF1A5F7A)),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Container(
                 width: 80,
                 height: width,
-                color: strokeWidth == width ? Color(0xFF1A5F7A) : Colors.grey,
+                color: strokeWidth == width
+                    ? const Color(0xFF1A5F7A)
+                    : Colors.grey,
               ),
             ),
           );
@@ -303,7 +305,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Color'),
+          title: const Text('Select Color'),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: selectedColor,
@@ -317,7 +319,7 @@ class _WhiteboardWidgetState extends State<WhiteboardWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -12,7 +12,7 @@ import '../../widgets/constant_app_bar.dart';
 import 'my_account_page.dart';
 
 class StudentProfileScreen extends StatefulWidget {
-  const StudentProfileScreen({Key? key}) : super(key: key);
+  const StudentProfileScreen({super.key});
 
   @override
   _StudentProfileScreenState createState() => _StudentProfileScreenState();
@@ -63,7 +63,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: ConstantAppBar(title: 'Profile'),
+      appBar: const ConstantAppBar(title: 'Profile'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -164,8 +164,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   MaterialPageRoute(builder: (context) => WhiteboardPage()));
               break;
             case 2:
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
               break;
             case 3:
               Navigator.pushReplacement(

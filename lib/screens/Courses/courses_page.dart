@@ -13,6 +13,8 @@ import '../Gamification/games_hub.dart';
 import '../Profile/student_profile_screen.dart';
 
 class Courses extends StatefulWidget {
+  const Courses({super.key});
+
   @override
   _CoursesState createState() => _CoursesState();
 }
@@ -21,12 +23,12 @@ class _CoursesState extends State<Courses> {
   int _selectedIndex = 0; // Set to 0 for Courses page
 
   // Color scheme
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
-  final Color lightTextColor = Color(0xFF757575);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+  final Color lightTextColor = const Color(0xFF757575);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,15 +44,17 @@ class _CoursesState extends State<Courses> {
         break;
       case 2:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 3:
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => GamesHub()));
         break;
       case 4:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => StudentProfileScreen()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const StudentProfileScreen()));
         break;
     }
   }
@@ -59,7 +63,7 @@ class _CoursesState extends State<Courses> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: ConstantAppBar(title: 'Courses'),
+      appBar: const ConstantAppBar(title: 'Courses'),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -75,12 +79,12 @@ class _CoursesState extends State<Courses> {
                     color: primaryColor,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 AnimationLimiter(
                   child: GridView.count(
                     crossAxisCount: 2,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     children: AnimationConfiguration.toStaggeredList(
@@ -179,7 +183,7 @@ class _CoursesState extends State<Courses> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(icon, size: 48, color: color),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
                   title,
                   style: GoogleFonts.roboto(
@@ -189,14 +193,14 @@ class _CoursesState extends State<Courses> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 LinearProgressIndicator(
                   value: progress,
                   backgroundColor: Colors.grey[300],
                   valueColor: AlwaysStoppedAnimation<Color>(color),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   '${(progress * 100).toInt()}% Complete',
                   style: GoogleFonts.roboto(

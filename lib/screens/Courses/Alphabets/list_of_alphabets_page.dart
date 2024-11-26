@@ -41,11 +41,13 @@ class AlphabetsPage extends StatelessWidget {
     {"alphabet": "હ", "transliteration": "ha"},
   ];
 
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+
+  AlphabetsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class AlphabetsPage extends StatelessWidget {
           ),
         ),
         backgroundColor: primaryColor,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
             color: Colors.white), // Added this line to change back button color
         elevation: 0, // Added elevation for better separation from the body
       ),
@@ -70,7 +72,7 @@ class AlphabetsPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: AnimationLimiter(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
@@ -117,7 +119,7 @@ class AlphabetsPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 5,
@@ -136,7 +138,7 @@ class AlphabetsPage extends StatelessWidget {
                 color: secondaryColor,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               '[$transliteration]',
               style: GoogleFonts.roboto(

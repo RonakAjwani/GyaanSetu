@@ -17,14 +17,16 @@ class NumbersPage extends StatelessWidget {
     {"number": "૯", "text": "9"},
   ];
 
+  const NumbersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: 'Numbers'),
+      appBar: const ConstantAppBar(title: 'Numbers'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
@@ -59,7 +61,7 @@ class NumbersPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 10,
@@ -75,10 +77,10 @@ class NumbersPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF2E8BC0),
+                color: const Color(0xFF2E8BC0),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               '[$text]',
               style: GoogleFonts.poppins(

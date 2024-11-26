@@ -6,10 +6,10 @@ class ConstantAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
 
   const ConstantAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,13 @@ class ConstantAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.white,
         ),
       ),
-      backgroundColor: Color(0xFF1A5F7A),
-      iconTheme: IconThemeData(color: Colors.white),
+      backgroundColor: const Color(0xFF1A5F7A),
+      iconTheme: const IconThemeData(color: Colors.white),
       elevation: 0,
       actions: actions,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

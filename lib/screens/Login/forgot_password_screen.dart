@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
@@ -16,13 +18,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   String? _successMessage;
 
   // Color scheme
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
-  final Color lightTextColor = Color(0xFF757575);
-  final Color errorColor = Color(0xFFD62828);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+  final Color lightTextColor = const Color(0xFF757575);
+  final Color errorColor = const Color(0xFFD62828);
 
   @override
   void dispose() {
@@ -69,12 +71,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildLogoAndAppName(),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Text(
                 "Forgot Password",
                 style: GoogleFonts.roboto(
@@ -84,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 "Enter your email address and we'll send you a link to reset your password.",
                 style: GoogleFonts.roboto(
@@ -93,13 +95,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               _buildTextField("Email", Icons.email, _emailController),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               _buildResetButton(),
               if (_errorMessage != null)
                 Padding(
-                  padding: EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Text(
                     _errorMessage!,
                     style: TextStyle(color: errorColor),
@@ -108,14 +110,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               if (_successMessage != null)
                 Padding(
-                  padding: EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Text(
                     _successMessage!,
-                    style: TextStyle(color: Colors.green),
+                    style: const TextStyle(color: Colors.green),
                     textAlign: TextAlign.center,
                   ),
                 ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildBackToLoginText(context),
             ],
           ),
@@ -134,7 +136,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -154,7 +156,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
@@ -170,7 +173,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           BoxShadow(
             color: accentColor.withOpacity(0.3),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -227,7 +230,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           width: 120,
           height: 120,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
           "GyaanSetu",
           style: GoogleFonts.roboto(

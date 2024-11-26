@@ -13,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,26 +31,28 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
-        '/studentProfile': (context) => StudentProfileScreen(),
+        '/studentProfile': (context) => const StudentProfileScreen(),
         '/account': (context) => MyAccountPage(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => const HomePage(),
       },
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasData) {
-          return HomePage();
+          return const HomePage();
         } else {
-          return WelcomePage();
+          return const WelcomePage();
         }
       },
     );

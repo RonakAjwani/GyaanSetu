@@ -9,16 +9,18 @@ import '../Profile/student_profile_screen.dart';
 import '../Home/home_page.dart';
 
 class GamesHub extends StatefulWidget {
+  const GamesHub({super.key});
+
   @override
   _GamesHubState createState() => _GamesHubState();
 }
 
 class _GamesHubState extends State<GamesHub> {
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
 
   int _selectedIndex = 3; // Assuming Games Hub is the 4th item in the nav bar
 
@@ -37,12 +39,14 @@ class _GamesHubState extends State<GamesHub> {
               MaterialPageRoute(builder: (context) => WhiteboardPage()));
           break;
         case 2:
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
           break;
         case 4:
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => StudentProfileScreen()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const StudentProfileScreen()));
           break;
       }
     }
@@ -51,7 +55,7 @@ class _GamesHubState extends State<GamesHub> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ConstantAppBar(title: 'Games Hub'),
+      appBar: const ConstantAppBar(title: 'Games Hub'),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -66,7 +70,7 @@ class _GamesHubState extends State<GamesHub> {
                   color: primaryColor,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -175,7 +179,7 @@ class _GamesHubState extends State<GamesHub> {
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
@@ -191,7 +195,7 @@ class _GamesHubState extends State<GamesHub> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 40, color: primaryColor),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 title,
                 style: GoogleFonts.roboto(
@@ -201,7 +205,7 @@ class _GamesHubState extends State<GamesHub> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Expanded(
                 child: Text(
                   description,

@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -27,13 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscureConfirmPassword = true;
 
   // Color scheme
-  final Color primaryColor = Color(0xFF1A5F7A);
-  final Color secondaryColor = Color(0xFF2E8BC0);
-  final Color accentColor = Color(0xFFFFB703);
-  final Color backgroundColor = Color(0xFFF5F5F5);
-  final Color textColor = Color(0xFF333333);
-  final Color lightTextColor = Color(0xFF757575);
-  final Color errorColor = Color(0xFFD62828);
+  final Color primaryColor = const Color(0xFF1A5F7A);
+  final Color secondaryColor = const Color(0xFF2E8BC0);
+  final Color accentColor = const Color(0xFFFFB703);
+  final Color backgroundColor = const Color(0xFFF5F5F5);
+  final Color textColor = const Color(0xFF333333);
+  final Color lightTextColor = const Color(0xFF757575);
+  final Color errorColor = const Color(0xFFD62828);
 
   @override
   void dispose() {
@@ -69,14 +71,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Account created successfully!'),
           backgroundColor: Colors.green,
         ),
       );
 
       // Delay for a moment to show the success message
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       // Navigate to login screen with a fade transition
       Navigator.pushReplacement(
@@ -87,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 500),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -103,12 +105,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildLogoAndAppName(),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Text(
                 "Create your account",
                 style: GoogleFonts.roboto(
@@ -118,37 +120,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildTextField("Email", Icons.email, _emailController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTextField("Full Name", Icons.person, _fullNameController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTextField(
                   "Username", Icons.account_circle, _usernameController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPasswordTextField(
                   "Password", Icons.lock, _passwordController,
                   isConfirmPassword: false),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               _buildPasswordStrengthIndicator(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildPasswordTextField(
                   "Confirm Password", Icons.lock, _confirmPasswordController,
                   isConfirmPassword: true),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildRoleSelection(),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               _buildSignUpButton(),
               if (_errorMessage != null)
                 Padding(
-                  padding: EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Text(
                     _errorMessage!,
                     style: TextStyle(color: errorColor),
                     textAlign: TextAlign.center,
                   ),
                 ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _buildLoginText(context),
             ],
           ),
@@ -167,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -187,7 +189,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
@@ -205,7 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -256,7 +259,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: secondaryColor, width: 2.0),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         ),
         style: GoogleFonts.roboto(color: textColor, fontSize: 16),
       ),
@@ -277,7 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Container(
           height: 6,
           decoration: BoxDecoration(
@@ -294,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -347,12 +351,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: textColor,
           ),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildRoleButton('Teacher'),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             _buildRoleButton('Student'),
           ],
         ),
@@ -370,8 +374,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           });
         },
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
           decoration: BoxDecoration(
             color: isSelected ? primaryColor : Colors.white,
             borderRadius: BorderRadius.circular(12),
@@ -384,7 +388,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 BoxShadow(
                   color: primaryColor.withOpacity(0.3),
                   blurRadius: 8,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
             ],
           ),
@@ -411,7 +415,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           BoxShadow(
             color: accentColor.withOpacity(0.3),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -471,7 +475,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           width: 120,
           height: 120,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
           "GyaanSetu",
           style: GoogleFonts.roboto(

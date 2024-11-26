@@ -5,21 +5,21 @@ class ConstantBottomNavBar extends StatelessWidget {
   final Function(int) onTap;
 
   const ConstantBottomNavBar({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Color(0xFF1A5F7A),
-      selectedItemColor: Color(0xFFFFB703),
+      backgroundColor: const Color(0xFF1A5F7A),
+      selectedItemColor: const Color(0xFFFFB703),
       unselectedItemColor: Colors.white,
       currentIndex: currentIndex,
       onTap: onTap,
-      items: [
+      items: const [
         BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Courses'),
         BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Whiteboard'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

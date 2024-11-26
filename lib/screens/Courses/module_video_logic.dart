@@ -7,7 +7,8 @@ class ChapterDetailPage extends StatefulWidget {
   final String title;
   final String videoId;
 
-  ChapterDetailPage({required this.title, required this.videoId});
+  const ChapterDetailPage(
+      {super.key, required this.title, required this.videoId});
 
   @override
   _ChapterDetailPageState createState() => _ChapterDetailPageState();
@@ -21,7 +22,7 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: widget.videoId,
-      flags: YoutubePlayerFlags(
+      flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
       ),
@@ -42,11 +43,11 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
+              margin: const EdgeInsets.symmetric(vertical: 20),
               child: YoutubePlayer(
                 controller: _controller,
                 showVideoProgressIndicator: true,
-                progressIndicatorColor: Color(0xFF2E8BC0),
+                progressIndicatorColor: const Color(0xFF2E8BC0),
               ),
             ),
             Padding(
@@ -59,16 +60,16 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                     style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1A5F7A),
+                      color: const Color(0xFF1A5F7A),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 10,
@@ -80,7 +81,7 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                       "Here will be the Gujarati translation for the video. You can update this text to reflect the translation of each chapter's video.",
                       style: GoogleFonts.roboto(
                         fontSize: 16,
-                        color: Color(0xFF333333),
+                        color: const Color(0xFF333333),
                       ),
                     ),
                   ),
