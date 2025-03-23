@@ -17,7 +17,7 @@ class NumbersPage extends StatelessWidget {
     {"number": "૯", "text": "9"},
   ];
 
-  const NumbersPage({super.key});
+  NumbersPage({super.key});
 
   @override
   Widget build(BuildContext context) {

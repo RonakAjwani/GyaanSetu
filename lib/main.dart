@@ -7,6 +7,7 @@ import 'screens/Login/login_screen.dart';
 import 'screens/Profile/student_profile_screen.dart';
 import 'screens/Profile/my_account_page.dart';
 import 'screens/Home/home_page.dart';
+import 'screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +23,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'GyaanSetu',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: AuthWrapper(),
+      home: const SplashScreen(),
       routes: {
+        '/auth': (context) => const AuthWrapper(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/studentProfile': (context) => const StudentProfileScreen(),
@@ -48,58 +52,18 @@ class AuthWrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (snapshot.hasData) {
           return const HomePage();
         } else {
-          return const WelcomePage();
+          return LoginScreen();
         }
       },
-    );
-  }
-}
-
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/gyaansetu.logo.png', // Ensure correct path for logo
-              height: 100,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'GyaanSetu',
-              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-            ),
-            const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  child: const Text('Login'),
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  child: const Text('Signup'),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

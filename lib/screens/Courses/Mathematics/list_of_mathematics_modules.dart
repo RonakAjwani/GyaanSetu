@@ -43,7 +43,7 @@ class MathematicsPage extends StatelessWidget {
     },
   ];
 
-  const MathematicsPage({super.key});
+  MathematicsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

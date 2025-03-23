@@ -1,0 +1,2 @@
+C:/Project/MC/GyaanSetu/android/app/.cxx/Debug/1z201c4t/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Project/MC/GyaanSetu/android/app/.cxx/Debug/1z201c4t/armeabi-v7a/CMakeFiles/rebuild_cache.dir
